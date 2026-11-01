@@ -126,6 +126,47 @@ html,body{width:100%;height:100%;overflow:hidden}
  .shortcutHelp,.shortcutHistoryTitle,#shortcutHistory{display:none!important}
  #zoomTop button,#shortcutToggle{padding:5px!important;font-size:11px!important}
 }
+
+/* Mobil navigasyon onarımı: hiçbir üst menü düğmesi kesilmez */
+#appShell{min-width:0;max-width:none}
+header{min-width:0}
+header .mt{min-width:0;scrollbar-width:thin;overscroll-behavior-x:contain}
+header .mt button{flex:0 0 auto}
+#zoomTop{min-width:0}
+#shortcutToggle{flex:0 0 auto}
+#workspace #wrap{min-width:0;overscroll-behavior:contain}
+#workspace #wrap::-webkit-scrollbar{width:8px;height:8px}
+#shortcutPanel{backdrop-filter:none!important;transition:none!important}
+@media(max-width:900px){
+ header{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto!important;column-gap:5px!important;row-gap:4px!important;align-items:center!important;flex-wrap:initial!important;padding:5px 6px!important}
+ header h1{grid-column:1!important;grid-row:1!important;min-width:0!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:initial!important;font-size:13px!important}
+ #zoomTop{grid-column:2!important;grid-row:1!important;margin:0!important}
+ #shortcutToggle{grid-column:3!important;grid-row:1!important;max-width:118px!important;overflow:hidden;text-overflow:ellipsis;font-size:10px!important;padding:5px!important}
+ header .mt{grid-column:1/-1!important;grid-row:2!important;display:flex!important;width:100%!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;justify-content:flex-start!important;flex-wrap:nowrap!important;scrollbar-width:thin}
+ header .mt button{padding:7px 11px!important;font-size:12px!important;min-height:30px!important}
+ #shortcutPanel{width:112px!important;flex-basis:112px!important;right:4px!important;top:4px!important;bottom:5px!important;opacity:.72!important}
+ #zoomBottom{bottom:5px;right:5px;padding:3px}
+ #zoomBottom button{padding:4px 7px}
+ #workspace #wrap{overflow-y:scroll!important;overflow-x:auto!important}
+}
+@media(max-width:900px) and (orientation:portrait){
+ #shortcutToggle{max-width:94px!important}
+ #zoomTop output{min-width:31px;font-size:10px}
+ #zoomTop button{padding:4px!important}
+ #rb{gap:2px}
+ #rb button{padding:6px 9px;font-size:11px}
+ .tb{padding:4px;gap:4px}
+ .tb button,.tb select{min-height:31px;padding:5px 7px}
+}
+@media(max-width:900px) and (orientation:landscape){
+ header{grid-template-columns:minmax(0,1fr) auto auto minmax(0,2fr)!important;row-gap:0!important}
+ header .mt{grid-column:4!important;grid-row:1!important;min-width:0!important}
+ header .mt button{font-size:11px!important;padding:6px 9px!important}
+ #shortcutToggle{max-width:112px!important}
+ #shortcutPanel{width:104px!important;flex-basis:104px!important}
+ #zoomBottom{bottom:3px}
+}
+@media(max-width:370px){header h1{font-size:11px!important}#shortcutToggle{max-width:78px!important;font-size:9px!important}#zoomTop{gap:1px!important}}
 </style></head><body><div id="appShell">
 <header><h1>📊 Excel Öğreniyorum</h1><div id="zoomTop"><button data-zoom="out" title="Küçült">−</button><output class="zoomValue">100%</output><button data-zoom="in" title="Büyüt">+</button></div><button id="shortcutToggle" title="Kısayol panelini aç veya kapat">⌨ Kısayolları Gizle</button><div class="mt"><button id="m1" class="on">Tablo</button> <button id="m2">Dersler</button> <button id="m3">Sınav</button><button id="m4">ℹ️ Uygulama Hakkında</button></div></header>
 
@@ -575,13 +616,15 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(
 (function(){
  const shell=document.getElementById('appShell'), workspace=document.getElementById('workspace');
  const clamp=(v)=>Math.max(.45,Math.min(1.5,Math.round(v*20)/20));
- let z=window.innerWidth<=600?.70:window.innerWidth<=900?.85:1;
- function applyZoom(){shell.style.setProperty('--appZoom',String(z));document.querySelectorAll('.zoomValue').forEach(el=>el.textContent=Math.round(z*100)+'%');}
- document.querySelectorAll('[data-zoom]').forEach(b=>b.addEventListener('click',()=>{z=clamp(b.dataset.zoom==='in'?z+.1:b.dataset.zoom==='out'?z-.1:1);applyZoom();}));
+ const defaultZoom=()=>window.innerWidth<=480?(window.innerWidth>window.innerHeight?.80:.65):window.innerWidth<=900?(window.innerWidth>window.innerHeight?.90:.80):1;
+ let z=defaultZoom(), zoomCustomized=false, lastOrientation=window.innerWidth>window.innerHeight;
+ function applyZoom(){shell.style.setProperty('--appZoom',String(z));document.querySelectorAll('.zoomValue').forEach(el=>el.textContent=Math.round(z*100)+'%');requestAnimationFrame(()=>{if(typeof renderCharts==='function' && document.getElementById('chartLayer'))renderCharts();});}
+ document.querySelectorAll('[data-zoom]').forEach(b=>b.addEventListener('click',()=>{zoomCustomized=true;z=clamp(b.dataset.zoom==='in'?z+.1:b.dataset.zoom==='out'?z-.1:1);applyZoom();}));
  const toggle=document.getElementById('shortcutToggle');
  let hidden=window.innerWidth<=600;
- function applyPanel(){workspace.classList.toggle('shortcuts-hidden',hidden);toggle.textContent=hidden?'⌨ Kısayolları Göster':'⌨ Kısayolları Gizle';toggle.setAttribute('aria-expanded',String(!hidden));}
+ function applyPanel(){workspace.classList.toggle('shortcuts-hidden',hidden);toggle.textContent=hidden?'⌨ Kısayollar':'⌨ Gizle';toggle.title=hidden?'Klavye kısayollarını göster':'Klavye kısayollarını gizle';toggle.setAttribute('aria-expanded',String(!hidden));}
  toggle.addEventListener('click',()=>{hidden=!hidden;applyPanel()});
+ let resizeFrame=0;window.addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{const portrait=window.innerWidth<=window.innerHeight;if(lastOrientation!==!portrait){lastOrientation=!portrait;zoomCustomized=false;}if(!zoomCustomized)z=defaultZoom();applyZoom();});},{passive:true});
  applyZoom();applyPanel();
 })();
 </script></body></html>
