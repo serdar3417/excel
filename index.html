@@ -77,6 +77,18 @@ kbd{background:#fff;color:#111;border:2px solid #94a3b8;border-bottom-width:4px;
 .chart-delete{font-size:14px;border:0;background:#fee2e2;color:#991b1b;border-radius:4px;cursor:pointer;min-width:27px;height:27px}
 .chart-embedded{display:block;flex:1;min-height:0;width:100%;background:#fff}
 .chart-resize{position:absolute;right:0;bottom:0;width:24px;height:24px;cursor:nwse-resize;touch-action:none;background:linear-gradient(135deg,transparent 48%,#64748b 50%,#64748b 57%,transparent 59%,transparent 68%,#64748b 70%,#64748b 77%,transparent 79%)}
+#assetLayer{position:absolute;left:0;top:0;pointer-events:none;z-index:8;min-width:100%;min-height:100%}
+.sheet-asset{position:absolute;pointer-events:auto;background:#ffffff;border:1px solid #94a3b8;border-radius:10px;box-shadow:0 5px 18px #0f172a22;display:flex;flex-direction:column;overflow:hidden;touch-action:none}
+.sheet-asset.selected{outline:2px solid #2563eb;outline-offset:1px}
+.asset-head{height:32px;display:flex;align-items:center;gap:5px;background:#eff6ff;border-bottom:1px solid #cbd5e1;padding:4px 6px;cursor:move;user-select:none;flex:none;touch-action:none}
+.asset-title{flex:1;min-width:0;color:#1e3a8a;font:bold 12px system-ui;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.asset-color{width:28px;height:24px;padding:0;border:1px solid #94a3b8;border-radius:4px;background:#fff}
+.asset-delete{font-size:14px;border:0;background:#fee2e2;color:#991b1b;border-radius:4px;cursor:pointer;min-width:27px;height:24px}.asset-rotate{font-size:14px;border:0;background:#e0f2fe;color:#075985;border-radius:4px;cursor:pointer;min-width:27px;height:24px}
+.asset-body{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;width:100%;background:transparent;overflow:hidden}
+.asset-body img{display:block;max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;transform-origin:center center;transition:transform .15s ease}
+.asset-svg{width:100%;height:100%;display:block;pointer-events:none}
+.asset-resize{position:absolute;right:0;bottom:0;width:24px;height:24px;cursor:nwse-resize;touch-action:none;background:linear-gradient(135deg,transparent 48%,#64748b 50%,#64748b 57%,transparent 59%,transparent 68%,#64748b 70%,#64748b 77%,transparent 79%)}
+
 
 #workspace{display:flex;flex:1;min-height:0;min-width:0;background:#fff}
 #workspace #wrap{flex:1;min-width:0;touch-action:pan-x pan-y}
@@ -175,6 +187,22 @@ header .mt button{flex:0 0 auto}
 #saveAsModal input,#saveAsModal select{display:block;width:100%;font-size:16px;padding:11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);margin:7px 0 12px}
 #saveAsModal button{padding:10px 15px;margin:4px;border:0;border-radius:8px;background:var(--ac);color:#fff;cursor:pointer}
 @media(max-width:600px){#documentName{max-width:115px;font-size:10px;padding:4px}#rb button[data-t=d]{font-weight:750}.file-status{font-size:10px}header h1{min-width:0}}
+
+/* Dokunmatik nesne düzenleyici */
+.sheet-asset,.sheet-chart{border:1px solid transparent!important;border-radius:2px!important;box-shadow:none!important;overflow:visible!important;touch-action:none;user-select:none}
+.sheet-asset.selected,.sheet-chart.selected{border:1px dashed #2563eb!important;outline:none!important}
+.sheet-asset .asset-head,.sheet-chart .chart-head{display:none!important}
+.sheet-asset .asset-body,.sheet-chart canvas{height:100%;width:100%;touch-action:none}
+.sheet-asset .asset-resize,.sheet-chart .chart-resize{opacity:0;pointer-events:none;bottom:-8px;right:-8px;width:20px;height:20px;border-radius:100%;background:#2563eb;border:3px solid white;box-shadow:0 1px 5px #0005}
+.sheet-asset.selected .asset-resize,.sheet-chart.selected .chart-resize{opacity:1;pointer-events:auto}
+#objectMenu{position:fixed;z-index:10000;display:none;background:var(--btn,#fff);color:var(--fg,#111);border:1px solid var(--line,#ccc);border-radius:12px;box-shadow:0 10px 35px #0005;padding:9px;width:min(285px,calc(100vw - 20px));max-height:75vh;overflow-y:auto;zoom:1;touch-action:pan-y}
+#objectMenu .menu-title{font-weight:800;font-size:13px;margin:0 0 7px}
+#objectMenu button{padding:9px 7px;border:1px solid var(--line,#ddd);border-radius:7px;background:var(--bar,#eee);color:var(--fg,#111);cursor:pointer;font-size:12px}
+#objectMenu .menu-actions{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+#objectMenu label{display:flex;align-items:center;justify-content:space-between;gap:7px;font-size:12px;padding:5px 0}
+#objectMenu input[type=number]{width:77px;padding:5px;color:#111;background:white;border:1px solid #94a3b8;border-radius:5px}
+#objectMenu input[type=color]{width:45px;height:28px}
+#objectMenu .menu-close{float:right}
 </style></head><body><div id="appShell">
 <header><h1>📊 Excel Öğreniyorum <span id="documentName" title="Dosya adı">ornek.xlsx</span></h1><div id="zoomTop"><button data-zoom="out" title="Küçült">−</button><output class="zoomValue">100%</output><button data-zoom="in" title="Büyüt">+</button></div><button id="shortcutToggle" title="Kısayol panelini aç veya kapat">⌨ Kısayolları Gizle</button><div class="mt"><button id="m1" class="on">Tablo</button> <button id="m2">Dersler</button> <button id="m3">Sınav</button><button id="m4">ℹ️ Uygulama Hakkında</button></div></header>
 
@@ -190,7 +218,7 @@ header .mt button{flex:0 0 auto}
 <button id="rm">⬚ Aralık seç</button><button id="clr">⌫ Temizle</button><button id="ch">📈 Grafik</button>
 </div>
 <div id="fb"><input id="nm" readonly value="A1"><input id="fx" placeholder="Değer yaz ya da =TOPLA(B2:B5) gibi formül gir"></div>
-<div id="workspace"><div id="wrap"><table id="g"></table><div id="chartLayer"></div></div><aside id="shortcutPanel" aria-label="Klavye kısayolları"><div class="shortcutTitle">⌨️ Klavye Kısayolları</div><p class="shortcutHelp">Bilgisayarda tuşları birlikte kullan. Telefon ve tablette satıra dokunarak aynı işlemi yap.</p><div id="shortcutRows"></div><div class="shortcutLast"><b>Son kullanılan kısayol</b><div id="shortcutCurrent">Henüz kullanılmadı</div><small id="shortcutMeaning">Kısayol kullandığında burada gösterilir.</small></div><div class="shortcutHistoryTitle">İşlem geçmişi</div><div id="shortcutHistory" aria-live="polite">Henüz işlem yapılmadı.</div></aside></div>
+<div id="workspace"><div id="wrap"><table id="g"></table><div id="chartLayer"></div><div id="assetLayer"></div></div><aside id="shortcutPanel" aria-label="Klavye kısayolları"><div class="shortcutTitle">⌨️ Klavye Kısayolları</div><p class="shortcutHelp">Bilgisayarda tuşları birlikte kullan. Telefon ve tablette satıra dokunarak aynı işlemi yap.</p><div id="shortcutRows"></div><div class="shortcutLast"><b>Son kullanılan kısayol</b><div id="shortcutCurrent">Henüz kullanılmadı</div><small id="shortcutMeaning">Kısayol kullandığında burada gösterilir.</small></div><div class="shortcutHistoryTitle">İşlem geçmişi</div><div id="shortcutHistory" aria-live="polite">Henüz işlem yapılmadı.</div></aside></div>
 <div id="cp"><div class="tb" style="padding:0 0 6px;background:none"><select id="ct"><option value="bar">Sütun grafik</option><option value="line">Çizgi grafik</option><option value="pie">Pasta grafik</option></select><button id="cx">✖ Kapat</button><span style="font-size:12px">Önce verileri (ilk sütun adlar olabilir) seç, sonra grafik oluştur.</span></div><canvas id="cv"></canvas></div>
 <div id="stb"></div><div id="sh"></div>
 </div>
@@ -227,7 +255,7 @@ header .mt button{flex:0 0 auto}
 
 <script>
 const $=s=>document.querySelector(s),L=i=>String.fromCharCode(65+i),COLS=12,ROWS=30,key=(r,c)=>L(c)+(r+1);
-const mk=n=>({n,d:{},cw:Array(COLS).fill(84),rh:Array(ROWS).fill(28),t:[],charts:[]});
+const mk=n=>({n,d:{},cw:Array(COLS).fill(84),rh:Array(ROWS).fill(28),t:[],charts:[],assets:[]});
 let S=[mk("Sayfa1"),mk("Sayfa2"),mk("Sayfa3")],si=0,sel={r:0,c:0,r2:0,c2:0},rmode=false,drag=false,editing=false;
 const cur=()=>S[si],cell=(r,c,n)=>{const d=cur().d,k=key(r,c);return d[k]||(n?d[k]={}:null)};
 const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display="none",2200)};
@@ -360,6 +388,9 @@ $("#ch").onclick=()=>createSheetChart();$("#cx").onclick=()=>$("#cp").style.disp
 /* Sayfa üzerine yerleşen, kaynak veri aralığıyla canlı bağlantılı grafikler */
 const chartLayer=document.querySelector('#chartLayer');
 let chartSeq=0, chartRAF=0;
+const assetLayer=document.querySelector('#assetLayer');
+let assetSeq=0, selectedAssetId=0, assetRAF=0;
+
 function queueChartPaint(){
  if(chartRAF)return;
  chartRAF=requestAnimationFrame(()=>{chartRAF=0;updateSheetCharts()});
@@ -375,41 +406,18 @@ function createSheetChart(type='bar'){
 }
 function renderCharts(){
  if(!chartLayer)return;
- const sh=cur();const charts=sh.charts||[];
+ const sh=cur(), charts=sh.charts||[];
  chartLayer.replaceChildren();
- const graphW=42+sh.cw.reduce((a,b)=>a+b,0),graphH=24+sh.rh.reduce((a,b)=>a+b,0);
- chartLayer.style.width=Math.max(graphW,...charts.map(c=>c.x+c.w+18))+'px';
- chartLayer.style.height=Math.max(graphH,...charts.map(c=>c.y+c.h+18))+'px';
  charts.forEach(c=>{
   const el=document.createElement('div');el.className='sheet-chart';el.dataset.chartId=c.id;
   el.style.cssText=`left:${c.x}px;top:${c.y}px;width:${c.w}px;height:${c.h}px`;
-  const head=document.createElement('div');head.className='chart-head';
-  const caption=document.createElement('span');caption.className='chart-title';caption.textContent=c.title||'Grafik';
-  const typ=document.createElement('select');typ.className='chart-kind';
-  [['bar','Sütun'],['line','Çizgi'],['pie','Pasta']].forEach(([value,name])=>{let o=document.createElement('option');o.value=value;o.textContent=name;typ.append(o)});
-  typ.value=c.type;typ.title='Grafik türünü değiştir';typ.onchange=()=>{c.type=typ.value;updateSheetCharts()};
-  const del=document.createElement('button');del.type='button';del.className='chart-delete';del.title='Grafiği sil';del.textContent='✕';
-  del.onclick=()=>{sh.charts=sh.charts.filter(v=>v!==c);renderCharts()};
-  head.append(caption,typ,del);
   const canvas=document.createElement('canvas');canvas.className='chart-embedded';
-  const resize=document.createElement('div');resize.className='chart-resize';resize.title='Boyutu değiştir';
-  el.append(head,canvas,resize);chartLayer.append(el);
-  function startDrag(evt,resizeMode){
-   if(evt.button!==0)return;
-   evt.preventDefault();evt.stopPropagation();const target=evt.currentTarget;
-   target.setPointerCapture(evt.pointerId);
-   const sx=evt.clientX,sy=evt.clientY,ox=c.x,oy=c.y,ow=c.w,oh=c.h;
-   const move=e=>{const dx=e.clientX-sx,dy=e.clientY-sy;
-    if(resizeMode){c.w=Math.max(230,Math.round(ow+dx));c.h=Math.max(170,Math.round(oh+dy));el.style.width=c.w+'px';el.style.height=c.h+'px';updateSheetCharts()}
-    else{c.x=Math.max(0,Math.round(ox+dx));c.y=Math.max(0,Math.round(oy+dy));el.style.left=c.x+'px';el.style.top=c.y+'px'}
-   };
-   const stop=()=>{target.removeEventListener('pointermove',move);target.removeEventListener('pointerup',stop);target.removeEventListener('pointercancel',stop);renderCharts()};
-   target.addEventListener('pointermove',move);target.addEventListener('pointerup',stop);target.addEventListener('pointercancel',stop);
-  }
-  head.addEventListener('pointerdown',e=>{if(e.target===head||e.target===caption)startDrag(e,false)});
-  resize.addEventListener('pointerdown',e=>startDrag(e,true));
+  canvas.style.transform=`rotate(${c.angle||0}deg)`;
+  const resize=document.createElement('div');resize.className='chart-resize';
+  el.append(canvas,resize);chartLayer.append(el);
+  wireObject(el,c,'chart',resize);
  });
- updateSheetCharts();
+ refreshOverlaySizes();updateSheetCharts();
 }
 function updateSheetCharts(){
  const sh=cur();(sh.charts||[]).forEach(c=>{
@@ -419,6 +427,147 @@ function updateSheetCharts(){
   if(cv.clientWidth>0)plot(cv,cdata(c.area,sh),c.type,1,Math.max(90,cv.clientHeight));
  });
 }
+
+function queueAssetPaint(){
+ if(assetRAF)return;
+ assetRAF=requestAnimationFrame(()=>{assetRAF=0;renderAssets()});
+}
+function ensureAssets(sh=cur()){if(!sh.assets)sh.assets=[];return sh.assets}
+function overlayBounds(){
+ const sh=cur();
+ const baseW=42+sh.cw.reduce((a,b)=>a+b,0), baseH=24+sh.rh.reduce((a,b)=>a+b,0);
+ const charts=(sh.charts||[]), assets=(sh.assets||[]);
+ const maxW=Math.max(baseW,...charts.map(c=>c.x+c.w+18),...assets.map(a=>a.x+a.w+18));
+ const maxH=Math.max(baseH,...charts.map(c=>c.y+c.h+18),...assets.map(a=>a.y+a.h+18));
+ return {w:maxW,h:maxH};
+}
+function refreshOverlaySizes(){
+ const b=overlayBounds();
+ if(chartLayer){chartLayer.style.width=b.w+'px';chartLayer.style.height=b.h+'px'}
+ if(assetLayer){assetLayer.style.width=b.w+'px';assetLayer.style.height=b.h+'px'}
+}
+function selectedAsset(){return ensureAssets().find(a=>a.id===selectedAssetId)}
+function syncShapeToolbar(){
+ const input=document.getElementById('shapeColor');
+ const a=selectedAsset();
+ if(input&&a&&a.kind==='shape')input.value=a.color||'#2563eb';
+}
+function svgShape(a){
+ const c=a.color||'#2563eb';
+ const stroke='#1e293b';
+ if(a.shape==='triangle')return `<svg class="asset-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,6 94,94 6,94" fill="${c}" stroke="${stroke}" stroke-width="3"/></svg>`;
+ if(a.shape==='diamond')return `<svg class="asset-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="50,4 96,50 50,96 4,50" fill="${c}" stroke="${stroke}" stroke-width="3"/></svg>`;
+ if(a.shape==='line')return `<svg class="asset-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="10" y1="85" x2="90" y2="15" stroke="${c}" stroke-width="9" stroke-linecap="round"/></svg>`;
+ if(a.shape==='square')return `<svg class="asset-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><rect x="7" y="7" width="86" height="86" rx="6" fill="${c}" stroke="${stroke}" stroke-width="3"/></svg>`;
+ return `<svg class="asset-svg" viewBox="0 0 100 100" preserveAspectRatio="none"><rect x="5" y="20" width="90" height="60" rx="6" fill="${c}" stroke="${stroke}" stroke-width="3"/></svg>`;
+}
+function selectAsset(id){selectedAssetId=id||0;syncShapeToolbar();assetLayer.querySelectorAll('.sheet-asset').forEach(el=>el.classList.toggle('selected',+el.dataset.assetId===selectedAssetId))}
+function addShapeAsset(shape){
+ const sh=cur(), assets=ensureAssets(sh);
+ const color=(document.getElementById('shapeColor')||{}).value||'#2563eb';
+ const isLine=shape==='line';
+ const w=shape==='rect'?190:(isLine?200:150), h=shape==='triangle'||shape==='diamond'||shape==='square'?150:(isLine?110:120);
+ assets.push({id:++assetSeq,kind:'shape',shape,color,x:90+assets.length*12,y:70+assets.length*12,w,h,title:{square:'Kare',rect:'Dikdörtgen',triangle:'Üçgen',diamond:'Eşkenar dörtgen',line:'Çizgi'}[shape]||'Şekil'});
+ selectedAssetId=assetSeq;renderAssets();toast((shape==='line'?'Çizgi':'Şekil')+' sayfaya eklendi. Taşıyabilir, boyutlandırabilir ve rengini değiştirebilirsin.');
+}
+function addImageAsset(src,name='Resim'){
+ const sh=cur(), assets=ensureAssets(sh);
+ assets.push({id:++assetSeq,kind:'image',src,x:96+assets.length*12,y:84+assets.length*12,w:220,h:170,angle:0,title:name.replace(/\.[^.]+$/,'')||'Resim'});
+ selectedAssetId=assetSeq;renderAssets();toast('Resim sayfaya eklendi. Taşıyabilir ve boyutlandırabilirsin.');
+}
+function renderAssets(){
+ if(!assetLayer)return;
+ const sh=cur(),assets=ensureAssets(sh);
+ assetLayer.replaceChildren();
+ assets.forEach(a=>{
+  const el=document.createElement('div');el.className='sheet-asset';el.dataset.assetId=a.id;
+  el.style.cssText=`left:${a.x}px;top:${a.y}px;width:${a.w}px;height:${a.h}px`;
+  const body=document.createElement('div');body.className='asset-body';
+  if(a.kind==='image'){
+   const img=document.createElement('img');img.src=a.src;img.alt=a.title||'Resim';img.draggable=false;body.append(img);
+  }else body.innerHTML=svgShape(a);
+  body.style.transform=`rotate(${a.angle||0}deg)`;
+  const resize=document.createElement('div');resize.className='asset-resize';
+  el.append(body,resize);assetLayer.append(el);
+  wireObject(el,a,'asset',resize);
+ });
+ refreshOverlaySizes();refreshObjectSelection();
+}
+/* Grafik, resim ve şekil için birleşik fare / dokunma yönetimi */
+let objectSelection=null, objectLongPress=null, objectMenuTarget=null;
+const objectMenu=document.createElement('div');objectMenu.id='objectMenu';document.body.append(objectMenu);
+function objectScale(){const el=document.getElementById('appShell');return el?el.getBoundingClientRect().width/el.offsetWidth:1}
+function objectForSelection(){if(!objectSelection)return null;const sh=cur();return objectSelection.kind==='chart'?(sh.charts||[]).find(o=>o.id===objectSelection.id):ensureAssets(sh).find(o=>o.id===objectSelection.id)}
+function refreshObjectSelection(){
+ document.querySelectorAll('.sheet-asset,.sheet-chart').forEach(el=>{
+  const kind=el.classList.contains('sheet-chart')?'chart':'asset',id=+(kind==='chart'?el.dataset.chartId:el.dataset.assetId);
+  el.classList.toggle('selected',!!objectSelection&&objectSelection.kind===kind&&objectSelection.id===id);
+ });
+}
+function chooseObject(kind,id){objectSelection={kind,id};if(kind==='asset'){selectedAssetId=id;syncShapeToolbar()}refreshObjectSelection()}
+function hideObjectMenu(){objectMenu.style.display='none';objectMenuTarget=null}
+function menuObjectAction(action){
+ const sel=objectMenuTarget||objectSelection;if(!sel)return;
+ const group=sel.kind==='chart'?'charts':'assets',list=cur()[group]||[],a=list.find(x=>x.id===sel.id);if(!a)return;
+ if(action==='delete'){cur()[group]=list.filter(x=>x!==a);hideObjectMenu();objectSelection=null;renderCharts();renderAssets();toast('Nesne silindi');return}
+ if(action==='duplicate'){const copy=JSON.parse(JSON.stringify(a));copy.id=sel.kind==='chart'?++chartSeq:++assetSeq;copy.x+=25;copy.y+=25;list.push(copy);hideObjectMenu();renderCharts();renderAssets();return}
+ if(action==='front'){const ix=list.indexOf(a);list.splice(ix,1);list.push(a)}
+ if(action==='back'){const ix=list.indexOf(a);list.splice(ix,1);list.unshift(a)}
+ if(action==='rotateLeft')a.angle=((a.angle||0)-90+360)%360;
+ if(action==='rotateRight')a.angle=((a.angle||0)+90)%360;
+ if(action==='bigger'){a.w=Math.round(a.w*1.15);a.h=Math.round(a.h*1.15)}
+ if(action==='smaller'){a.w=Math.max(65,Math.round(a.w*.85));a.h=Math.max(50,Math.round(a.h*.85))}
+ hideObjectMenu();renderCharts();renderAssets();
+}
+function showObjectMenu(kind,id,x,y){
+ chooseObject(kind,id);objectMenuTarget={kind,id};const a=objectForSelection();if(!a)return;
+ const isShape=kind==='asset'&&a.kind==='shape';
+ objectMenu.innerHTML=`<button class="menu-close" data-menu="close" aria-label="Kapat">✕</button><div class="menu-title">${kind==='chart'?'📊 Grafik':isShape?'🔷 Şekil':'🖼 Resim'} işlemleri</div>
+ <div class="menu-actions"><button data-menu="rotateLeft">↶ Sola döndür</button><button data-menu="rotateRight">↷ Sağa döndür</button><button data-menu="bigger">＋ Büyüt</button><button data-menu="smaller">− Küçült</button><button data-menu="front">Öne getir</button><button data-menu="back">Arkaya gönder</button><button data-menu="duplicate">⧉ Çoğalt</button><button data-menu="delete">🗑 Sil</button></div>
+ <label>Genişlik <input type="number" data-size="w" min="65" max="2500" value="${Math.round(a.w)}"></label>
+ <label>Yükseklik <input type="number" data-size="h" min="50" max="2500" value="${Math.round(a.h)}"></label>
+ <label>Açı (°) <input type="number" data-size="angle" min="-360" max="360" value="${a.angle||0}"></label>
+ ${isShape?`<label>Şekil rengi <input type="color" data-color="1" value="${a.color||'#2563eb'}"></label>`:''}
+ ${kind==='chart'?`<label>Grafik türü <select data-chart-type><option value="bar">Sütun</option><option value="line">Çizgi</option><option value="pie">Pasta</option></select></label>`:''}
+ <small style="display:block;opacity:.75;margin-top:7px">Taşımak için nesneyi sürükleyin, sağ alt noktadan boyutlandırın.</small>`;
+ if(kind==='chart')objectMenu.querySelector('[data-chart-type]').value=a.type;
+ objectMenu.style.display='block';const width=objectMenu.offsetWidth,height=objectMenu.offsetHeight;
+ objectMenu.style.left=Math.max(5,Math.min(x,innerWidth-width-5))+'px';
+ objectMenu.style.top=Math.max(5,Math.min(y,innerHeight-height-5))+'px';
+}
+objectMenu.addEventListener('click',e=>{const b=e.target.closest('[data-menu]');if(b){const k=b.dataset.menu;k==='close'?hideObjectMenu():menuObjectAction(k)}});
+objectMenu.addEventListener('change',e=>{const sel=objectMenuTarget;if(!sel)return;const a=objectForSelection();if(!a)return;
+ if(e.target.dataset.size){const k=e.target.dataset.size;a[k]=k==='angle'?+e.target.value:Math.max(k==='w'?65:50,+e.target.value)}
+ if(e.target.dataset.color)a.color=e.target.value;
+ if(e.target.dataset.chartType!==undefined)a.type=e.target.value;
+ renderCharts();renderAssets();
+});
+document.addEventListener('pointerdown',e=>{if(!objectMenu.contains(e.target)&&!e.target.closest('.sheet-asset,.sheet-chart'))hideObjectMenu()},true);
+function wireObject(el,a,kind,resize){
+ const id=a.id;
+ el.addEventListener('contextmenu',e=>{e.preventDefault();e.stopPropagation();showObjectMenu(kind,id,e.clientX,e.clientY)});
+ function pointerStart(e,isResize){
+  if(e.button!==0)return;
+  if(e.pointerType==='touch'&&!e.isPrimary)return;
+  e.preventDefault();e.stopPropagation();hideObjectMenu();chooseObject(kind,id);
+  const px=e.clientX,py=e.clientY, ox=a.x,oy=a.y,ow=a.w,oh=a.h,scale=objectScale();
+  let moved=false, menuShown=false;
+  if(!isResize){objectLongPress=setTimeout(()=>{if(!moved){menuShown=true;showObjectMenu(kind,id,px,py)}},550)}
+  try{el.setPointerCapture(e.pointerId)}catch(err){}
+  const move=ev=>{if(ev.pointerId!==e.pointerId)return;const dx=(ev.clientX-px)/scale,dy=(ev.clientY-py)/scale;
+   if(Math.hypot(ev.clientX-px,ev.clientY-py)>8){moved=true;clearTimeout(objectLongPress)}
+   if(menuShown||!moved)return;
+   if(isResize){a.w=Math.max(65,Math.round(ow+dx));a.h=Math.max(50,Math.round(oh+dy));el.style.width=a.w+'px';el.style.height=a.h+'px';refreshOverlaySizes();if(kind==='chart')updateSheetCharts()}
+   else{a.x=Math.max(0,Math.round(ox+dx));a.y=Math.max(0,Math.round(oy+dy));el.style.left=a.x+'px';el.style.top=a.y+'px';refreshOverlaySizes()}
+  };
+  const stop=ev=>{if(ev.pointerId!==e.pointerId)return;clearTimeout(objectLongPress);el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',stop);el.removeEventListener('pointercancel',stop);try{el.releasePointerCapture(e.pointerId)}catch(err){};if(moved){refreshOverlaySizes();if(kind==='chart')updateSheetCharts()}};
+  el.addEventListener('pointermove',move);el.addEventListener('pointerup',stop);el.addEventListener('pointercancel',stop);
+ }
+ el.addEventListener('pointerdown',e=>{if(e.target===resize)return;pointerStart(e,false)});
+ resize.addEventListener('pointerdown',e=>pointerStart(e,true));
+}
+const imagePicker=document.createElement('input');imagePicker.type='file';imagePicker.accept='image/*';imagePicker.hidden=true;document.body.append(imagePicker);
+imagePicker.addEventListener('change',()=>{const f=imagePicker.files&&imagePicker.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>addImageAsset(rd.result,f.name);rd.readAsDataURL(f);imagePicker.value=''});
 
 /* ---------- dersler ---------- */
 const LS=[
@@ -541,10 +690,15 @@ const _ls=lessons;lessons=function(){if(li<0){$("#ln").innerHTML="";return dash(
 /* şerit sekmeleri, kenarlık, durum çubuğu */
 const TB=$("#v1 .tb");
 TB.insertAdjacentHTML("beforeend",`<span class="sp" data-g="g"></span><label data-g="g">Çizgi<select id="bst"><option value="solid">Tek çizgi</option><option value="double">Çift çizgi</option><option value="dashed">Kesik çizgi</option><option value="dotted">Noktalı</option><option value="none">Çizgi yok</option></select></label><label data-g="g">Kalınlık<select id="bw"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label><label data-g="g">Renk<input type="color" id="bc" value="#334155"></label><button data-g="g" id="ba">▦ Kenarlık uygula</button><button data-g="s" id="ns">＋ Yeni sayfa</button><span data-g="f" style="font-size:12px">Sayıları seç, sonra bir düğmeye bas:</span><button data-g="f" data-fn="TOPLA">Σ Toplam</button><button data-g="f" data-fn="ORTALAMA">Ortalama</button><button data-g="f" data-fn="MIN">Min</button><button data-g="f" data-fn="MAK">Maks</button><button data-g="f" data-fn="SAY">Say</button>`);
+TB.insertAdjacentHTML("beforeend",`<span class="sp" data-g="e"></span><button data-g="e" id="insertImageBtn">🖼 Resim ekle</button><button data-g="e" class="shapeBtn" data-shape="square">◼ Kare</button><button data-g="e" class="shapeBtn" data-shape="rect">▭ Dikdörtgen</button><button data-g="e" class="shapeBtn" data-shape="triangle">🔺 Üçgen</button><button data-g="e" class="shapeBtn" data-shape="diamond">◆ Eşkenar dörtgen</button><button data-g="e" class="shapeBtn" data-shape="line">／ Çizgi</button><label data-g="e">Şekil rengi<input type="color" id="shapeColor" value="#2563eb"></label><button data-g="e" id="applyShapeColor">🎨 Renk uygula</button>`);
 let pg="g";[...TB.children].forEach(el=>{if(!el.dataset.g)el.dataset.g=el.classList.contains("sp")?pg:(el.matches("#mt,#dt,#ch")||el.querySelector("#tbg"))?"e":el.dataset.sz?"s":"g";pg=el.dataset.g});
 TB.insertAdjacentHTML("beforebegin",'<div id="rb"><button data-t="d">📁 Dosya</button><button data-t="g">Giriş</button><button data-t="e">Ekle</button><button data-t="f">Formüller</button><button data-t="s">Sayfa Düzeni</button></div>');
 function setTab(t){[...TB.children].forEach(el=>el.style.display=el.dataset.g===t?"":"none");document.querySelectorAll("#rb button").forEach(b=>b.classList.toggle("on",b.dataset.t===t))}
 $("#rb").onclick=e=>{const b=e.target.closest("button");if(b)setTab(b.dataset.t)};setTab("d");
+document.getElementById('insertImageBtn').onclick=()=>imagePicker.click();
+document.querySelectorAll('.shapeBtn').forEach(b=>b.onclick=()=>addShapeAsset(b.dataset.shape));
+document.getElementById('applyShapeColor').onclick=()=>{const a=selectedAsset(),v=document.getElementById('shapeColor').value;if(a&&a.kind==='shape'){a.color=v;renderAssets();toast('Şekil rengi güncellendi')}else toast('Önce bir şekil seç')};
+document.getElementById('shapeColor').addEventListener('input',e=>{const a=selectedAsset();if(a&&a.kind==='shape'){a.color=e.target.value;renderAssets()}});
 $("#ns").onclick=()=>{const b=document.querySelector("#sh [data-add]");b?b.click():toast("En fazla 6 sayfa")};
 $("#ba").onclick=()=>{const s=$("#bst").value,w=+$("#bw").value,c=$("#bc").value,f=x=>{if(s==="none"){delete x.bs;delete x.bd}else x.bs={s,w:s==="double"?Math.max(3,w):w,c}},t=tabAt(sel.r,sel.c);
  if(t&&sel.r===sel.r2&&sel.c===sel.c2){for(let i=0;i<t.h;i++)for(let j=0;j<t.w;j++)f(cell(t.r+i,t.c+j,1));paint()}else each(f)};
@@ -605,6 +759,7 @@ addEventListener("keydown",e=>{if($("#ls").style.display!=="block"||!LS[li]||!LS
  rows.forEach((r,i)=>r.forEach((v,j)=>d[key(i,j)]={v:String(v),bd:1,bg:i?undefined:"#bfdbfe"}));
  for(let i=1;i<5;i++)d[key(i,3)]={v:`=B${i+1}*C${i+1}`,bd:1};d.A6={v:"Toplam",bd:1,bg:"#bbf7d0"};d.D6={v:"=TOPLA(D2:D5)",bd:1,bg:"#bbf7d0"};S[0].t.push({r:0,c:0,h:5,w:4});
  d.F1={v:"Sayıları yaz, formülle hesapla!",ha:"left"}})();
+const originalBuild=build;build=function(){originalBuild();renderAssets()};
 tabs();build();pick(1,3);
 
 /* Dokunmatik alan seçimi ve canlı kısayol rehberi */
