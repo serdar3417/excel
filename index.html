@@ -87,8 +87,47 @@ kbd{background:#fff;color:#111;border:2px solid #94a3b8;border-bottom-width:4px;
 .shortcutLast{margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--btn)}.shortcutLast b{font-size:13px}.shortcutLast #shortcutCurrent{font-size:20px;font-weight:800;color:var(--ac);margin:7px 0}.shortcutLast small{line-height:1.5}.shortcutHistoryTitle{font-weight:700;margin-top:16px;margin-bottom:8px}#shortcutHistory{font-size:12px;line-height:1.75}#shortcutHistory div{padding:5px;border-bottom:1px solid var(--line)}
 #g{touch-action:none}#g td,#g th{touch-action:none}
 @media(max-width:900px){#workspace{flex-direction:column}#workspace #wrap{flex:1;min-height:240px}#shortcutPanel{flex:none;width:100%;max-height:210px;padding:8px 12px;border-left:0;border-top:1px solid var(--line)}#shortcutRows{display:flex;overflow-x:auto;gap:6px}.shortcutRow{min-width:155px;flex:0 0 155px;flex-direction:column;align-items:flex-start;margin:0}.shortcutHelp{display:none}.shortcutLast{margin-top:8px;padding:6px}.shortcutLast #shortcutCurrent{font-size:15px;margin:2px 0}.shortcutHistoryTitle,#shortcutHistory{display:none}}
-</style></head><body>
-<header><h1>📊 Excel Öğreniyorum</h1><div class="mt"><button id="m1" class="on">Tablo</button> <button id="m2">Dersler</button> <button id="m3">Sınav</button><button id="m4">ℹ️ Uygulama Hakkında</button></div></header>
+
+/* Ölçeklendirme, kaydırma ve saydam kısa yol paneli */
+html,body{width:100%;height:100%;overflow:hidden}
+#appShell{--appZoom:1;zoom:var(--appZoom);width:calc(100% / var(--appZoom));height:calc(100% / var(--appZoom));display:flex;flex-direction:column;overflow:hidden}
+#zoomTop{display:flex;align-items:center;gap:3px;margin-right:5px;flex:none}
+#zoomTop button,#shortcutToggle{border:1px solid #ffffff70;border-radius:7px;background:#ffffff21;color:#fff;cursor:pointer;padding:7px 9px;font-weight:750;white-space:nowrap}
+#zoomTop output{font-size:12px;color:white;min-width:36px;text-align:center}
+#zoomBottom{position:fixed;bottom:7px;right:8px;z-index:55;display:flex;align-items:center;gap:3px;border-radius:10px;background:#14532de8;padding:4px 6px;color:white;box-shadow:0 2px 12px #0003}
+#zoomBottom button{color:white;border:0;background:#ffffff20;padding:5px 10px;border-radius:6px;font-weight:bold;cursor:pointer}
+#zoomBottom output{font-size:11px;min-width:37px;text-align:center}
+#workspace{position:relative}
+#workspace #wrap{overflow-x:auto!important;overflow-y:scroll!important;scrollbar-gutter:stable}
+#workspace #wrap::-webkit-scrollbar,#shortcutPanel::-webkit-scrollbar{width:12px;height:11px}
+#workspace #wrap::-webkit-scrollbar-thumb,#shortcutPanel::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:9px;border:2px solid #f1f5f9}
+#workspace #wrap::-webkit-scrollbar-track{background:#e2e8f0}
+#shortcutPanel{flex:0 0 167px!important;width:167px!important;padding:7px!important;background:color-mix(in srgb,var(--bg) 66%,transparent)!important;backdrop-filter:blur(3px);opacity:.78;transition:opacity .2s,flex-basis .2s,width .2s}
+#shortcutPanel:hover{opacity:1}
+.shortcutTitle{font-size:12px!important;margin-bottom:5px!important}
+.shortcutHelp{font-size:10px!important;margin-bottom:5px!important}
+.shortcutRow{gap:3px!important;padding:5px 4px!important;margin:3px 0!important;border-radius:6px!important;background:transparent!important}
+.shortcutRow kbd{font-size:10px!important;min-width:67px!important;padding:2px 3px!important;border-width:1px!important}
+.shortcutRow span{font-size:10px!important}
+.shortcutLast{margin-top:6px!important;padding:5px!important;background:transparent!important}
+.shortcutLast b{font-size:10px!important}.shortcutLast #shortcutCurrent{font-size:13px!important;margin:3px 0!important}
+.shortcutLast small,#shortcutHistory{font-size:10px!important}.shortcutHistoryTitle{font-size:10px!important;margin-top:6px!important}
+#workspace.shortcuts-hidden #shortcutPanel{display:none!important}
+@media(max-width:900px){
+ header{gap:4px;padding:4px!important}header h1{font-size:13px!important;flex:1 0 auto!important}
+ .mt{display:flex;align-items:center;gap:3px;overflow-x:auto;max-width:100%}
+ .mt button{padding:6px!important;font-size:11px!important}
+ #workspace{flex-direction:row!important}
+ #workspace #wrap{min-height:0!important;flex:1!important}
+ #shortcutPanel{position:absolute;right:12px;top:4px;bottom:8px;max-height:none!important;z-index:10;overflow-y:auto;box-shadow:0 2px 8px #0002;border:1px solid #94a3b870!important;border-radius:9px;width:126px!important;flex:0 0 126px!important;padding:4px!important;background:color-mix(in srgb,var(--bg) 40%,transparent)!important;opacity:.65}
+ #shortcutRows{display:block!important;overflow:visible!important}
+ .shortcutRow{min-width:0!important;width:100%!important;display:flex!important;flex-direction:row!important;align-items:center!important;gap:3px!important;margin:2px 0!important;padding:3px!important}
+ .shortcutRow kbd{min-width:55px!important;font-size:9px!important}.shortcutRow span{font-size:9px!important}
+ .shortcutHelp,.shortcutHistoryTitle,#shortcutHistory{display:none!important}
+ #zoomTop button,#shortcutToggle{padding:5px!important;font-size:11px!important}
+}
+</style></head><body><div id="appShell">
+<header><h1>📊 Excel Öğreniyorum</h1><div id="zoomTop"><button data-zoom="out" title="Küçült">−</button><output class="zoomValue">100%</output><button data-zoom="in" title="Büyüt">+</button></div><button id="shortcutToggle" title="Kısayol panelini aç veya kapat">⌨ Kısayolları Gizle</button><div class="mt"><button id="m1" class="on">Tablo</button> <button id="m2">Dersler</button> <button id="m3">Sınav</button><button id="m4">ℹ️ Uygulama Hakkında</button></div></header>
 
 <div id="v1" style="display:flex;flex-direction:column;flex:1;min-height:0">
 <div class="tb">
@@ -532,4 +571,17 @@ document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||document.get
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const k={copy:'C',cut:'X',paste:'V',undo:'Z',redo:'Y',all:'A'}[b.dataset.act];if(k)announceShortcut(k)},false);
 // Dokunmatik sürükleme, pointer capture sayesinde hücre dışına gidildiğinde de devam eder.
 // Parmağı aynı hücreye bir kez dokunmak seçimdir; çift dokunmak düzenlemedir.
+</script></div><div id="zoomBottom" aria-label="Uygulama ölçeği"><button data-zoom="out" title="Sayfayı küçült">−</button><output class="zoomValue">100%</output><button data-zoom="in" title="Sayfayı büyüt">+</button><button data-zoom="reset" title="Ölçeği sıfırla">↺</button></div><script>
+(function(){
+ const shell=document.getElementById('appShell'), workspace=document.getElementById('workspace');
+ const clamp=(v)=>Math.max(.45,Math.min(1.5,Math.round(v*20)/20));
+ let z=window.innerWidth<=600?.70:window.innerWidth<=900?.85:1;
+ function applyZoom(){shell.style.setProperty('--appZoom',String(z));document.querySelectorAll('.zoomValue').forEach(el=>el.textContent=Math.round(z*100)+'%');}
+ document.querySelectorAll('[data-zoom]').forEach(b=>b.addEventListener('click',()=>{z=clamp(b.dataset.zoom==='in'?z+.1:b.dataset.zoom==='out'?z-.1:1);applyZoom();}));
+ const toggle=document.getElementById('shortcutToggle');
+ let hidden=window.innerWidth<=600;
+ function applyPanel(){workspace.classList.toggle('shortcuts-hidden',hidden);toggle.textContent=hidden?'⌨ Kısayolları Göster':'⌨ Kısayolları Gizle';toggle.setAttribute('aria-expanded',String(!hidden));}
+ toggle.addEventListener('click',()=>{hidden=!hidden;applyPanel()});
+ applyZoom();applyPanel();
+})();
 </script></body></html>
