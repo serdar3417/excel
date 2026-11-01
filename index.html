@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Excel Öğreniyorum</title>
+<style>
+:root{--bg:#f1f5f9;--fg:#0f172a;--bar:#e2e8f0;--line:#cbd5e1;--hd:#e8edf3;--cell:#fff;--ac:#1d6f42;--btn:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f172a;--fg:#e2e8f0;--bar:#1e293b;--line:#475569;--hd:#273449;--btn:#334155}}
+:root[data-theme="dark"]{--bg:#0f172a;--fg:#e2e8f0;--bar:#1e293b;--line:#475569;--hd:#273449;--btn:#334155}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--fg);font-family:system-ui,"Segoe UI",Arial,sans-serif;overflow:hidden}
+header{background:var(--ac);color:#fff;display:flex;align-items:center;gap:10px;padding:6px 10px;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;flex:1;white-space:nowrap}
+.mt button{background:rgba(255,255,255,.18);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-size:14px;cursor:pointer}
+.mt button.on{background:#fff;color:var(--ac);font-weight:700}
+button,select,input{font:inherit}
+.tb{display:flex;gap:6px;overflow-x:auto;padding:6px;background:var(--bar);align-items:center;flex:none}
+.tb button,.tb select,.tb input[type=text]{background:var(--btn);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px 9px;min-height:36px;white-space:nowrap;cursor:pointer;font-size:13px}
+.tb button.on{background:var(--ac);color:#fff}
+.tb input[type=color]{width:38px;height:36px;padding:2px;border:1px solid var(--line);border-radius:6px;background:var(--btn)}
+.tb label{font-size:11px;display:flex;flex-direction:column;align-items:center;white-space:nowrap}
+.tb .sp{width:1px;background:var(--line);align-self:stretch;flex:none}
+#fb{display:flex;gap:6px;padding:4px 6px;background:var(--bar);flex:none}
+#nm{width:56px;text-align:center;font-weight:700}#fx{flex:1;min-width:0}
+#fb input{border:1px solid var(--line);border-radius:6px;padding:6px;background:var(--cell);color:#111}
+#wrap{flex:1;overflow:auto;background:#fff;position:relative;min-height:0}
+table#g{border-collapse:separate;border-spacing:0;table-layout:fixed}
+th{background:var(--hd);color:var(--fg);font-size:12px;font-weight:600;border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:sticky;user-select:none}
+.ch{top:0;z-index:2;height:24px}.rh{left:0;z-index:1}.corner{top:0;left:0;z-index:3}
+.rz{position:absolute;right:-6px;top:0;width:12px;height:100%;cursor:col-resize;touch-action:none;z-index:5}
+.rzr{position:absolute;left:0;bottom:-6px;height:12px;width:100%;cursor:row-resize;touch-action:none;z-index:5}
+td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;color:#111;overflow:hidden;white-space:nowrap;padding:0 4px;font-size:14px;text-align:left}
+td span{display:inline-block}
+td.bd{box-shadow:inset 0 0 0 1.5px #334155}
+td.sel{background-image:linear-gradient(rgba(37,99,235,.2),rgba(37,99,235,.2))}
+td.act{box-shadow:inset 0 0 0 2px #2563eb}
+td input.ed{width:100%;height:100%;border:0;outline:0;font-size:14px;background:#fffbe6;color:#111;padding:0}
+#sh{display:flex;gap:4px;padding:4px 6px;background:var(--bar);overflow-x:auto;flex:none}
+#sh button{border:1px solid var(--line);background:var(--btn);color:var(--fg);padding:6px 12px;border-radius:6px 6px 0 0;cursor:pointer}
+#sh button.on{background:#fff;color:var(--ac);font-weight:700;border-bottom:3px solid var(--ac)}
+#cp{display:none;background:var(--bg);border-top:2px solid var(--ac);padding:8px;flex:none}
+#cv{width:100%;height:230px;display:block;background:#fff;border-radius:8px}
+#ls{flex:1;overflow:auto;padding:10px;display:none;min-height:0}
+#about{flex:1;overflow:auto;padding:16px;display:none;min-height:0}#about .ab-wrap{max-width:1020px;margin:0 auto}#about .ab-hero{background:linear-gradient(125deg,#14532d,#1d6f42,#15803d);color:#fff;padding:25px;border-radius:18px;margin-bottom:16px}#about .ab-hero h2{margin:0 0 8px;font-size:27px}#about .ab-hero p{margin:0;line-height:1.7}#about .ab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}#about .ab-card{background:var(--btn);border:1px solid var(--line);padding:17px;border-radius:14px;line-height:1.65}#about .ab-card h3{margin:0 0 8px;color:var(--ac);font-size:17px}#about .ab-card p{margin:4px 0}#about .ab-card ul,#about .ab-card ol{padding-left:22px;margin:6px 0}#about .ab-section{margin:20px 0 10px;font-size:20px}#about .ab-steps{counter-reset:abstep}#about .ab-step{position:relative;padding-left:45px;margin:12px 0}#about .ab-step:before{counter-increment:abstep;content:counter(abstep);position:absolute;left:0;top:0;background:var(--ac);color:white;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700}#about .ab-code{background:#0f172a;color:#bbf7d0;border-radius:7px;padding:10px;font-family:monospace;overflow-x:auto;margin:8px 0}#about .ab-note{border-left:4px solid #16a34a;background:var(--bar);padding:13px 15px;border-radius:8px;margin:15px 0}#about .ab-jump{border:0;border-radius:9px;background:var(--ac);color:white;padding:9px 13px;cursor:pointer;margin:8px 6px 0 0}#about .ab-card strong{color:var(--fg)}@media(max-width:600px){#about{padding:9px}#about .ab-hero{padding:18px}#about .ab-hero h2{font-size:22px}#about .ab-grid{grid-template-columns:1fr}}
+#ln{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}
+#ln button{border:1px solid var(--line);background:var(--btn);color:var(--fg);padding:8px 12px;border-radius:20px;white-space:nowrap;cursor:pointer}
+#ln button.on{background:var(--ac);color:#fff}
+.card{background:var(--btn);border:1px solid var(--line);border-radius:12px;padding:14px;max-width:760px;margin:auto}
+.card h2{margin:0 0 6px;color:var(--ac)}
+code.sx{display:block;background:#0f172a;color:#86efac;padding:10px;border-radius:8px;margin:8px 0;font-size:15px;overflow-x:auto}
+.mini{border-collapse:collapse;margin:10px 0}.mini td,.mini th{border:1px solid var(--line);padding:6px 14px;min-width:70px;height:34px;text-align:center;position:static;color:#111;background:#fff}
+.mini th{background:var(--hd);color:var(--fg)}
+.mini td.hl{background:#fde68a;transition:.3s;transform:scale(1.08)}
+.mini td.res{background:#bbf7d0;font-weight:700;animation:pop .6s}
+@keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+#st{min-height:24px;font-weight:600;color:var(--ac)}
+.pb{background:var(--ac);color:#fff;border:0;padding:10px 16px;border-radius:8px;cursor:pointer;margin:4px 4px 0 0}
+th.hl{background:#86efac!important;color:#14532d!important}
+#cm{display:none;position:fixed;z-index:30;background:var(--btn);border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.3);padding:4px;min-width:170px}
+#cm button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--fg);padding:9px 12px;font-size:14px;cursor:pointer;border-radius:6px}#cm button:hover{background:var(--bar)}
+#md{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;align-items:center;justify-content:center;padding:10px}#md .card{width:100%;max-width:430px}#md input[type=number]{width:64px;padding:6px;font-size:16px}
+#ex{flex:1;overflow:auto;padding:10px;display:none;min-height:0}.q{margin:10px auto}.q label{display:block;padding:7px;border-radius:6px}.q.ok{border:2px solid #16a34a}.q.bad{border:2px solid #dc2626}.fb{font-weight:700;margin-top:6px}
+.bars{display:flex;gap:16px;align-items:flex-end;height:130px;border-bottom:2px solid var(--fg);padding:0 10px;margin:8px 0}.bars div{text-align:center;font-size:12px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}.bars i{display:block;width:34px;background:#2563eb}
+.qi{width:110px;border:2px solid #2563eb;border-radius:4px;padding:4px;font-size:14px}#cl{width:100%;height:210px;background:#fff;border-radius:8px}
+#rb{display:flex;gap:2px;background:var(--ac);padding:0 6px;flex:none;overflow-x:auto}#rb button{background:none;color:#fff;border:0;padding:7px 14px;cursor:pointer;border-radius:6px 6px 0 0;font-size:13px;white-space:nowrap}#rb button.on{background:var(--bar);color:var(--fg);font-weight:700}
+#stb{padding:2px 10px;font-size:12px;background:var(--bar);color:var(--fg);flex:none;text-align:right;white-space:pre}
+#lc{max-width:900px}.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.dc{background:var(--bar);border-radius:12px;padding:12px}.dc h3{margin:0 0 8px;font-size:15px}.dt{display:block;width:100%;margin:5px 0;padding:10px;border:0;border-radius:8px;background:var(--btn);color:var(--fg);cursor:pointer;text-align:left;font-size:14px}.dt:hover{outline:2px solid var(--ac)}
+.qc{width:100%;max-width:420px;height:170px;background:#fff;border-radius:8px;display:block;margin-top:8px}
+kbd{background:#fff;color:#111;border:2px solid #94a3b8;border-bottom-width:4px;border-radius:6px;padding:4px 10px;font-weight:700;display:inline-block;transition:.15s}.cb.pr kbd{background:#86efac;transform:translateY(3px)}.cb{font-size:15px}
+#toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#111;color:#fff;padding:8px 14px;border-radius:20px;display:none;z-index:9;font-size:13px}
+
+/* Hücre alanına bağlı, sürüklenebilir gömülü grafikler */
+#chartLayer{position:absolute;left:0;top:0;pointer-events:none;z-index:7;min-width:100%;min-height:100%}
+.sheet-chart{position:absolute;pointer-events:auto;background:white;border:1px solid #94a3b8;border-radius:9px;box-shadow:0 5px 18px #0f172a30;display:flex;flex-direction:column;overflow:hidden;touch-action:none}
+.chart-head{height:35px;display:flex;align-items:center;gap:5px;background:#ecfdf5;border-bottom:1px solid #cbd5e1;padding:4px 6px;cursor:move;user-select:none;flex:none;touch-action:none}
+.chart-title{flex:1;min-width:0;color:#14532d;font:bold 12px system-ui;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-kind{font-size:12px;max-width:95px;padding:3px;border:1px solid #94a3b8;border-radius:5px;background:white;color:#0f172a}
+.chart-delete{font-size:14px;border:0;background:#fee2e2;color:#991b1b;border-radius:4px;cursor:pointer;min-width:27px;height:27px}
+.chart-embedded{display:block;flex:1;min-height:0;width:100%;background:#fff}
+.chart-resize{position:absolute;right:0;bottom:0;width:24px;height:24px;cursor:nwse-resize;touch-action:none;background:linear-gradient(135deg,transparent 48%,#64748b 50%,#64748b 57%,transparent 59%,transparent 68%,#64748b 70%,#64748b 77%,transparent 79%)}
+
+#workspace{display:flex;flex:1;min-height:0;min-width:0;background:#fff}
+#workspace #wrap{flex:1;min-width:0;touch-action:pan-x pan-y}
+#shortcutPanel{width:285px;flex:0 0 285px;background:var(--bg);border-left:1px solid var(--line);padding:14px;overflow-y:auto;color:var(--fg);font-size:13px}
+.shortcutTitle{font-size:17px;font-weight:800;color:var(--ac);margin-bottom:8px}.shortcutHelp{line-height:1.5;font-size:12px;opacity:.85;margin:0 0 12px}
+.shortcutRow{display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:var(--btn);border:1px solid var(--line);border-radius:9px;padding:10px 8px;margin:6px 0;cursor:pointer;color:var(--fg)}
+.shortcutRow kbd{white-space:nowrap;font-size:11px;padding:4px 6px;min-width:88px;text-align:center}.shortcutRow span{font-size:13px}.shortcutRow.active{border:2px solid var(--ac);background:#dcfce7;color:#14532d}
+.shortcutLast{margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--btn)}.shortcutLast b{font-size:13px}.shortcutLast #shortcutCurrent{font-size:20px;font-weight:800;color:var(--ac);margin:7px 0}.shortcutLast small{line-height:1.5}.shortcutHistoryTitle{font-weight:700;margin-top:16px;margin-bottom:8px}#shortcutHistory{font-size:12px;line-height:1.75}#shortcutHistory div{padding:5px;border-bottom:1px solid var(--line)}
+#g{touch-action:none}#g td,#g th{touch-action:none}
+@media(max-width:900px){#workspace{flex-direction:column}#workspace #wrap{flex:1;min-height:240px}#shortcutPanel{flex:none;width:100%;max-height:210px;padding:8px 12px;border-left:0;border-top:1px solid var(--line)}#shortcutRows{display:flex;overflow-x:auto;gap:6px}.shortcutRow{min-width:155px;flex:0 0 155px;flex-direction:column;align-items:flex-start;margin:0}.shortcutHelp{display:none}.shortcutLast{margin-top:8px;padding:6px}.shortcutLast #shortcutCurrent{font-size:15px;margin:2px 0}.shortcutHistoryTitle,#shortcutHistory{display:none}}
+</style></head><body>
+<header><h1>📊 Excel Öğreniyorum</h1><div class="mt"><button id="m1" class="on">Tablo</button> <button id="m2">Dersler</button> <button id="m3">Sınav</button><button id="m4">ℹ️ Uygulama Hakkında</button></div></header>
+
+<div id="v1" style="display:flex;flex-direction:column;flex:1;min-height:0">
+<div class="tb">
+<label>Dolgu<input type="color" id="bg" value="#fef08a"></label>
+<button id="nobg">Renksiz</button>
+<label>Tablo rengi<input type="color" id="tbg" value="#bfdbfe"></label><span class="sp"></span>
+<select id="ff"><option value="">Yazı tipi</option><option>Arial</option><option>Times New Roman</option><option>Courier New</option><option>Comic Sans MS</option><option>Verdana</option></select><select id="fs"><option value="">Punto</option><option>10</option><option>12</option><option>14</option><option>16</option><option>20</option><option>24</option><option>32</option></select><span class="sp"></span><button data-ha="left">⬅ Sol</button><button data-ha="center">↔ Orta</button><button data-ha="right">Sağ ➡</button><span class="sp"></span>
+<button data-va="top">⬆ Üst</button><button data-va="middle">↕ Orta</button><button data-va="bottom">⬇ Alt</button><button id="rot">🔄 Döndür</button><span class="sp"></span>
+<button data-sz="cw,12">Sütun ＋</button><button data-sz="cw,-12">Sütun －</button><button data-sz="rh,8">Satır ＋</button><button data-sz="rh,-8">Satır －</button><span class="sp"></span>
+<button id="mt">▦ Tablo ekle</button><button id="dt">🗑 Tabloyu sil</button><span class="sp"></span>
+<button id="rm">⬚ Aralık seç</button><button id="clr">⌫ Temizle</button><button id="ch">📈 Grafik</button>
+</div>
+<div id="fb"><input id="nm" readonly value="A1"><input id="fx" placeholder="Değer yaz ya da =TOPLA(B2:B5) gibi formül gir"></div>
+<div id="workspace"><div id="wrap"><table id="g"></table><div id="chartLayer"></div></div><aside id="shortcutPanel" aria-label="Klavye kısayolları"><div class="shortcutTitle">⌨️ Klavye Kısayolları</div><p class="shortcutHelp">Bilgisayarda tuşları birlikte kullan. Telefon ve tablette satıra dokunarak aynı işlemi yap.</p><div id="shortcutRows"></div><div class="shortcutLast"><b>Son kullanılan kısayol</b><div id="shortcutCurrent">Henüz kullanılmadı</div><small id="shortcutMeaning">Kısayol kullandığında burada gösterilir.</small></div><div class="shortcutHistoryTitle">İşlem geçmişi</div><div id="shortcutHistory" aria-live="polite">Henüz işlem yapılmadı.</div></aside></div>
+<div id="cp"><div class="tb" style="padding:0 0 6px;background:none"><select id="ct"><option value="bar">Sütun grafik</option><option value="line">Çizgi grafik</option><option value="pie">Pasta grafik</option></select><button id="cx">✖ Kapat</button><span style="font-size:12px">Önce verileri (ilk sütun adlar olabilir) seç, sonra grafik oluştur.</span></div><canvas id="cv"></canvas></div>
+<div id="stb"></div><div id="sh"></div>
+</div>
+
+<div id="ls"><div id="ln"></div><div class="card" id="lc"></div></div>
+<div id="ex"></div><section id="about" aria-label="Uygulama Hakkında"><div class="ab-wrap">
+<div class="ab-hero"><h2>📊 Excel Öğreniyorum — Uygulama Hakkında</h2><p>Elektronik tabloları keşfet, formülleri animasyonlarla öğren, kendi tablolarını ve grafiklerini oluştur, uygulamalı sınavlarla bilgilerini ölç!</p><button class="ab-jump" data-go="0" style="background:#fff;color:#14532d">📚 Derslere başla</button><button class="ab-jump" data-go="1" style="background:#fff;color:#14532d">📋 Tabloyu aç</button><button class="ab-jump" data-go="2" style="background:#fff;color:#14532d">📝 Sınava gir</button></div>
+<h2 class="ab-section">🎯 Uygulamanın amacı</h2><div class="ab-card"><p><strong>Excel Öğreniyorum</strong>, özellikle elektronik tablo kullanmayı yeni öğrenen öğrencilerin temel hücre işlemlerini, hesaplama formüllerini, veri düzenlemeyi ve grafik oluşturmayı deneyerek öğrenmeleri için tasarlanmış tarayıcı tabanlı bir eğitim uygulamasıdır.</p><p>Öğrenci önce kısa konu anlatımını ve animasyonu izler, ardından aynı işlemi gerçek tablo üzerinde uygular. Son aşamada hem çoktan seçmeli hem uygulamalı sorularla öğrendiklerini sınar. Böylece yalnızca formülü ezberlemek yerine <strong>hangi durumda, nasıl kullanılacağını</strong> öğrenir.</p></div>
+<h2 class="ab-section">🧩 Uygulamanın özellikleri</h2><div class="ab-grid">
+<div class="ab-card"><h3>📋 Etkileşimli elektronik tablo</h3><ul><li>12 sütun (A–L) ve 30 satırlık çalışma alanı</li><li>Başlangıçta 3 sayfa, toplam 6 sayfaya kadar ekleme ve sayfa adını değiştirme</li><li>Hücrelere metin, sayı ve formül girme</li><li>Fareyle sürükleme, aralık seçme ve dokunarak seçim</li><li>Satır yüksekliği ve sütun genişliği ayarları</li></ul></div>
+<div class="ab-card"><h3>🎨 Biçimlendirme ve düzen</h3><ul><li>Hücre ve tablo arka planı renklendirme</li><li>Yazı tipi, punto, yatay ve dikey hizalama</li><li>Yazıyı döndürme, kenarlık rengi ve çizgi türü</li><li>Kes, kopyala, yapıştır, temizle, geri al ve yinele</li><li>Boş tablo, not çizelgesi ve alışveriş listesi şablonları</li></ul></div>
+<div class="ab-card"><h3>🧮 Formüller ve fonksiyonlar</h3><ul><li>Dört işlem: +, −, ×, ÷</li><li>TOPLA, ORTALAMA, MİN, MAK ve SAY</li><li>EĞER ve EĞERSAY ile koşullu hesaplama</li><li>YUVARLA, MUTLAK ve KAREKÖK</li><li>Seçili sayılar için hızlı hesaplama düğmeleri ve alt durum çubuğunda özet</li></ul></div>
+<div class="ab-card"><h3>📊 Grafikler ve veri okuryazarlığı</h3><ul><li>Sütun, çizgi ve daire (pasta) grafikleri</li><li>Seçilen hücre aralığından grafik çizimi</li><li>Animasyonlu grafik dersleri</li><li>Veri karşılaştırma, değişim ve oranları yorumlama</li></ul></div>
+<div class="ab-card"><h3>📚 Animasyonlu dersler</h3><ul><li>19 konu: temel işlemler, istatistik, sayı fonksiyonları, mantık, grafikler ve kısayollar</li><li>Örnek veri ve adım adım açıklama</li><li>0,5x, 1x, 2x ve 3x animasyon hızı</li><li>“📋 Tabloda dene” ile örnekleri Sayfa3 üzerinde uygulama</li></ul></div>
+<div class="ab-card"><h3>📝 Uygulamalı sınav ve kayıtlar</h3><ul><li>Çoktan seçmeli ve görsel sorular</li><li>Formül yazma, tablo doldurma, grafik ve biçimlendirme görevleri</li><li>Doğru/yanlış gösterimi ve yanlışlarda doğru cevap</li><li>Öğrenci adıyla puan ve soru bazlı sonuç kaydı</li><li>Tarayıcıdaki kayıtlı sonuçları görme ve isteğe bağlı silme</li></ul></div>
+</div>
+<h2 class="ab-section">🚀 Adım adım nasıl kullanılır?</h2><div class="ab-card ab-steps">
+<div class="ab-step"><strong>1. Dersler bölümünü aç.</strong><p>Üst menüden <b>Dersler</b> düğmesine bas. Açılan ders panelinde bir kategori ve konu seç. Konu anlatımını oku, “Animasyonu oynat” düğmesine bas. İstersen animasyon hızını değiştir.</p></div>
+<div class="ab-step"><strong>2. Öğrendiğin konuyu tabloda uygula.</strong><p>“📋 Tabloda dene” düğmesine bastığında örnek veriler Sayfa3'e aktarılır. Formülün sonucunu gör, sayıların değerlerini değiştir ve hesaplamanın nasıl değiştiğini incele.</p></div>
+<div class="ab-step"><strong>3. Kendi hücrelerini doldur.</strong><p><b>Tablo</b> bölümüne geç. Bir hücreyi seçip yeniden tıkla ya da çift tıkla. Sayı veya metin yaz ve Enter'a bas. Üstteki formül çubuğundan da giriş yapabilirsin. A1 ve A2 gibi adlar hücre adresidir.</p></div>
+<div class="ab-step"><strong>4. Formül yaz ve sonucu bul.</strong><p>Örneğin A1'e 10, A2'ye 20 yaz. B1'i seçip aşağıdaki formülü gir. Sonuç 30 olur.</p><div class="ab-code">=TOPLA(A1:A2)</div><p>Bir formülün başındaki <b>=</b> işareti hesaplama yapılacağını belirtir.</p></div>
+<div class="ab-step"><strong>5. Verileri biçimlendir ve tablo oluştur.</strong><p>Hücreleri seç; <b>Giriş</b> sekmesinde renk, yazı tipi, hizalama veya kenarlıkları düzenle. <b>Ekle</b> sekmesinden hazır tablo ekleyebilir ya da seçtiğin alanı tabloya dönüştürebilirsin.</p></div>
+<div class="ab-step"><strong>6. Grafik çiz.</strong><p>Bir sütunda adları, yanında sayısal değerleri yaz. İlgili alanı seç. <b>Ekle → Grafik</b> düğmesini kullanıp sütun, çizgi veya pasta grafiğini seç.</p></div>
+<div class="ab-step"><strong>7. Sınava gir ve sonucunu incele.</strong><p><b>Sınav</b> bölümüne geç, adını yaz ve <b>Başla</b> düğmesine bas. Soruları tamamlayıp <b>Sınavı bitir</b> seçeneğine dokun. Doğru cevaplar yeşil, yanlışlar kırmızı gösterilir. <b>Kayıtlı sonuçlar</b> ekranında önceki sınavlarını inceleyebilirsin.</p></div>
+</div>
+<h2 class="ab-section">💡 Pratik örnekler</h2><div class="ab-grid">
+<div class="ab-card"><h3>🛒 Alışveriş toplamı</h3><p>Adet B2, birim fiyat C2 hücresindeyse tutarı hesapla:</p><div class="ab-code">=B2*C2</div><p>D2'den D5'e kadar toplam tutar:</p><div class="ab-code">=TOPLA(D2:D5)</div></div>
+<div class="ab-card"><h3>🏫 Not ortalaması</h3><p>A1, A2 ve A3 hücrelerinde üç sınav notu olsun:</p><div class="ab-code">=ORTALAMA(A1:A3)</div><p>50 ve üzerindeki notlar geçsin:</p><div class="ab-code">=EĞER(A1>=50;"Geçti";"Kaldı")</div></div>
+<div class="ab-card"><h3>⌨️ Kullanışlı kısayollar</h3><p><b>Ctrl+C</b> kopyala, <b>Ctrl+X</b> kes, <b>Ctrl+V</b> yapıştır, <b>Ctrl+A</b> tümünü seç, <b>Ctrl+Z</b> geri al, <b>Ctrl+Y</b> yinele.</p><p>Dokunmatik cihazlarda hücreye uzun basarak işlem menüsünü açabilirsin.</p></div>
+</div>
+<div class="ab-note"><strong>ℹ️ Bilmeniz gerekenler:</strong> Bu uygulama, Excel becerilerini öğretmek amacıyla hazırlanmış tarayıcı içi bir çalışma ortamıdır; Microsoft Excel'in tüm özelliklerini içermez. Sınav kayıtları bu cihazın tarayıcısında tutulur; başka cihazlarda otomatik görünmez. Tablo çalışmalarını ayrıca bir Excel dosyasına indirme özelliği bu sürümde bulunmaz. Sayfayı yenilersen tabloya yaptığın değişiklikler kaybolabilir.</div>
+<div class="ab-card"><h3>🎓 Öğrenme önerisi</h3><p>Önce bir dersi animasyonuyla izle, sonra “Tabloda dene” ile örneği uygula. Verileri değiştirerek sonucu tahmin et. Formülü yardım almadan yeniden yazabildiğinde sonraki konuya geç. Birkaç dersin sonunda sınavı çözerek eksik olduğun konuları tekrar et.</p><button class="ab-jump" data-go="0">📚 Derslere git</button><button class="ab-jump" data-go="2">📝 Sınava git</button></div>
+<div class="ab-card"><h3>📈 Sayfa Üzerinde Canlı Grafikler</h3><p>Önce veri hücrelerini seçip <b>Ekle → Grafik</b> düğmesine basın. Grafik elektronik tablonun üzerinde açılır. Yeşil başlık çubuğundan sürükleyerek taşıyın, sağ alt köşesinden boyutlandırın. Grafik türünü üstündeki menüden değiştirebilir ve ✕ ile silebilirsiniz. Kaynak hücreleri değiştirdiğinizde grafik otomatik güncellenir. Her sayfa kendi grafiklerini saklar.</p></div></div></section><div id="cm"></div><div id="md"><div class="card"><h2>▦ Tablo ekle</h2><label>Hazır tablo <select id="tp"></select></label><p>Satır <input type="number" id="tr1" min="1" max="30" value="3"> Sütun <input type="number" id="tc1" min="1" max="12" value="2"></p><label><input type="checkbox" id="th1" checked> İlk satır başlık olsun</label><div id="tsy"></div><p style="font-size:12px">Tablo seçili hücreden başlar.</p><button class="pb" id="tok">Oluştur</button><button class="pb" id="tcn" style="background:#64748b">İptal</button></div></div><div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),L=i=>String.fromCharCode(65+i),COLS=12,ROWS=30,key=(r,c)=>L(c)+(r+1);
+const mk=n=>({n,d:{},cw:Array(COLS).fill(84),rh:Array(ROWS).fill(28),t:[],charts:[]});
+let S=[mk("Sayfa1"),mk("Sayfa2"),mk("Sayfa3")],si=0,sel={r:0,c:0,r2:0,c2:0},rmode=false,drag=false,editing=false;
+const cur=()=>S[si],cell=(r,c,n)=>{const d=cur().d,k=key(r,c);return d[k]||(n?d[k]={}:null)};
+const toast=m=>{const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display="none",2200)};
+/* ---------- formül motoru ---------- */
+const fold=n=>n.toUpperCase().replace(/Ç/g,"C").replace(/Ğ/g,"G").replace(/İ/g,"I").replace(/Ö/g,"O").replace(/Ş/g,"S").replace(/Ü/g,"U");
+const nums=a=>a.flat(9).filter(v=>typeof v==="number");
+const F={TOPLA:(...a)=>nums(a).reduce((x,y)=>x+y,0),ORTALAMA:(...a)=>{const n=nums(a);return n.length?F.TOPLA(n)/n.length:"#SIFIRA BÖLME"},
+MIN:(...a)=>Math.min(...nums(a)),MAK:(...a)=>Math.max(...nums(a)),SAY:(...a)=>nums(a).length,EGER:(c,a,b)=>c?a:(b===undefined?false:b),
+YUVARLA:(x,n=0)=>Math.round(x*10**n)/10**n,MUTLAK:Math.abs,KAREKOK:x=>x<0?"#HATA":Math.sqrt(x),
+EGERSAY:(r,k)=>{const m=/^(>=|<=|<>|>|<|=)?(.*)$/.exec(String(k)),o=m[1]||"=",t=m[2],tn=t!==""&&!isNaN(t.replace(",","."))?+t.replace(",","."):t;
+return r.flat(9).filter(v=>{if(v==="")return false;switch(o){case">":return v>tn;case"<":return v<tn;case">=":return v>=tn;case"<=":return v<=tn;case"<>":return v!=tn;default:return v==tn}}).length}};
+Object.assign(F,{SUM:F.TOPLA,AVERAGE:F.ORTALAMA,MAX:F.MAK,COUNT:F.SAY,IF:F.EGER,ROUND:F.YUVARLA,ABS:F.MUTLAK,SQRT:F.KAREKOK,COUNTIF:F.EGERSAY});
+function ev(raw,d,dp=0){
+ if(raw==null)return "";raw=String(raw);if(raw.trim()==="")return "";
+ if(raw[0]!=="="){const t=raw.trim().replace(",",".");return !isNaN(t)?+t:raw}
+ if(dp>30)return "#DÖNGÜ";raw=raw.replace(/[“”]/g,'"');
+ const V=k=>{const v=ev(d[k]&&d[k].v,d,dp+1);return v===""?0:v};
+ const R=(a,b)=>{const c1=a.charCodeAt(0)-65,c2=b.charCodeAt(0)-65,r1=+a.slice(1),r2=+b.slice(1),o=[];
+  for(let r=Math.min(r1,r2);r<=Math.max(r1,r2);r++)for(let c=Math.min(c1,c2);c<=Math.max(c1,c2);c++)o.push(ev(d[L(c)+r]&&d[L(c)+r].v,d,dp+1));return o};
+ try{
+  const f=raw.slice(1).split(/("[^"]*")/).map((p,i)=>{if(i%2)return p;
+   p=p.replace(/([A-Za-zÇĞİÖŞÜçğıöşü]+)\s*\(/g,(m,n)=>"F."+fold(n)+"(");
+   p=p.replace(/\b([A-La-l])(\d{1,2})(?::([A-La-l])(\d{1,2}))?\b/g,(m,a,b,c,e)=>c?`R("${a.toUpperCase()}${b}","${c.toUpperCase()}${e}")`:`V("${a.toUpperCase()}${b}")`);
+   return p.replace(/<>/g,"!=").replace(/(?<![<>!=])=(?!=)/g,"==").replace(/;/g,",").replace(/,(?=\d)(?<=\d,)/g,".")}).join("");
+  const x=new Function("V","R","F","return "+f)(V,R,F);
+  if(typeof x==="number")return isFinite(x)?x:"#SIFIRA BÖLME";return x===undefined?"#HATA":x;
+ }catch(e){return "#HATA"}}
+const fmt=v=>typeof v==="number"?v.toLocaleString("tr-TR",{maximumFractionDigits:6}):String(v);
+/* ---------- tablo ---------- */
+function build(){const s=cur();$("#g").style.width=42+s.cw.reduce((a,b)=>a+b)+"px";
+ let h='<colgroup><col style="width:42px">'+s.cw.map(w=>`<col style="width:${w}px">`).join("")+'</colgroup><thead><tr><th class="corner"></th>';
+ for(let c=0;c<COLS;c++)h+=`<th class="ch" data-c="${c}">${L(c)}<i class="rz" data-c="${c}"></i></th>`;
+ h+="</tr></thead><tbody>";
+ for(let r=0;r<ROWS;r++){h+=`<tr style="height:${s.rh[r]}px"><th class="rh" data-r="${r}">${r+1}<i class="rzr" data-r="${r}"></i></th>`;
+  for(let c=0;c<COLS;c++)h+=`<td data-r="${r}" data-c="${c}"><span></span></td>`;h+="</tr>"}
+ $("#g").innerHTML=h+"</tbody>";paint();renderCharts()}
+const rng=()=>({r1:Math.min(sel.r,sel.r2),r2:Math.max(sel.r,sel.r2),c1:Math.min(sel.c,sel.c2),c2:Math.max(sel.c,sel.c2)});
+function paint(){if(editing)return;const s=cur(),g=rng();
+ document.querySelectorAll("#g td").forEach(td=>{const r=+td.dataset.r,c=+td.dataset.c,x=s.d[key(r,c)]||{},v=ev(x.v,s.d);
+  if(!td.firstChild||td.firstChild.tagName!=="SPAN"){td.innerHTML="<span></span>"}
+  const sp=td.firstChild;sp.textContent=fmt(v);sp.style.transform=x.rot?`rotate(${-x.rot}deg)`:"";
+  td.style.background=x.bg||"";td.style.fontSize=(x.fs||14)+"px";td.style.fontFamily=x.ff||"";td.style.textAlign=x.ha||(typeof v==="number"?"right":"left");td.style.verticalAlign=x.va||"middle";
+  td.style.outline=x.bs?`${x.bs.w}px ${x.bs.s} ${x.bs.c}`:"";td.style.outlineOffset=x.bs?`-${x.bs.w}px`:"";td.className=(x.bd&&!x.bs?"bd ":"")+(r>=g.r1&&r<=g.r2&&c>=g.c1&&c<=g.c2?"sel ":"")+(r===sel.r&&c===sel.c?"act":"")});
+ document.querySelectorAll("#g .ch").forEach(t=>t.classList.toggle("hl",+t.dataset.c>=g.c1&&+t.dataset.c<=g.c2));document.querySelectorAll("#g .rh").forEach(t=>t.classList.toggle("hl",+t.dataset.r>=g.r1&&+t.dataset.r<=g.r2));$("#nm").value=key(sel.r,sel.c);const a=cell(sel.r,sel.c);if(document.activeElement!==$("#fx"))$("#fx").value=a&&a.v||""}
+const tdAt=(r,c)=>$(`#g td[data-r="${r}"][data-c="${c}"]`);
+function pick(r,c,ext){r=Math.max(0,Math.min(ROWS-1,r));c=Math.max(0,Math.min(COLS-1,c));
+ if(ext){sel.r2=r;sel.c2=c}else sel={r,c,r2:r,c2:c};paint()}
+function setV(r,c,v){const x=cell(r,c,1);x.v=v}
+function edit(ini){const {r,c}=sel,td=tdAt(r,c),x=cell(r,c);if(!td)return;editing=true;
+ const i=document.createElement("input");i.className="ed";i.value=ini!=null?ini:(x&&x.v||"");td.innerHTML="";td.appendChild(i);i.focus();
+ let done=0;const fin=(ok,dr,dc)=>{if(done)return;done=1;editing=false;if(ok)setV(r,c,i.value);paint();if(dr||dc)pick(r+dr,c+dc)};
+ i.onkeydown=e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();fin(1,1,0)}else if(e.key==="Tab"){e.preventDefault();fin(1,0,1)}else if(e.key==="Escape")fin(0)};
+ i.onblur=()=>fin(1);i.oninput=()=>$("#fx").value=i.value}
+/* seçim olayları */
+const g=$("#g");
+g.addEventListener("pointerdown",e=>{const t=e.target;
+ if(t.classList.contains("rz")){e.preventDefault();t.setPointerCapture(e.pointerId);const c=+t.dataset.c,x0=e.clientX,w0=cur().cw[c];
+  t.onpointermove=ev2=>{const w=Math.max(30,Math.min(400,w0+ev2.clientX-x0));cur().cw[c]=w;g.querySelectorAll("col")[c+1].style.width=w+"px";g.style.width=42+cur().cw.reduce((a,b)=>a+b)+"px"};
+  t.onpointerup=()=>{t.onpointermove=null};return}
+ if(t.classList.contains("rzr")){e.preventDefault();t.setPointerCapture(e.pointerId);const r=+t.dataset.r,y0=e.clientY,h0=cur().rh[r];
+  t.onpointermove=ev2=>{const h=Math.max(18,Math.min(300,h0+ev2.clientY-y0));cur().rh[r]=h;t.closest("tr").style.height=h+"px"};
+  t.onpointerup=()=>{t.onpointermove=null};return}
+ const th=t.closest("th");
+ if(th&&th.dataset.c!=null){sel={r:0,c:+th.dataset.c,r2:ROWS-1,c2:+th.dataset.c};paint();return}
+ if(th&&th.dataset.r!=null){sel={r:+th.dataset.r,c:0,r2:+th.dataset.r,c2:COLS-1};paint();return}
+ const td=t.closest("td");if(!td||editing||e.button===2)return;const r=+td.dataset.r,c=+td.dataset.c;
+ if(e.shiftKey||(rmode&&(sel.r!==sel.r2||sel.c!==sel.c2||true)&&rmode==="b")){pick(r,c,true);rmode=rmode?"a":false;rmb();return}
+ if(rmode==="a"){pick(r,c);rmode="b";toast("Şimdi aralığın son hücresine dokun");return}
+ if(e.pointerType!=="touch"&&r===sel.r&&c===sel.c&&sel.r===sel.r2&&sel.c===sel.c2&&!smode&&!cmode){edit();return}
+ pick(r,c);if(e.pointerType==="mouse"||e.pointerType==="touch"||smode||cmode){drag=true;dsel=1;if(e.pointerType==="touch"){e.preventDefault();try{g.setPointerCapture(e.pointerId)}catch(_){}}}});
+g.addEventListener("pointermove",e=>{if(!drag)return;if(e.pointerType==="touch")e.preventDefault();const td=document.elementFromPoint(e.clientX,e.clientY);const t=td&&td.closest("td");if(t&&g.contains(t)){const r=+t.dataset.r,c=+t.dataset.c;if(r!==sel.r2||c!==sel.c2)pick(r,c,true)}});
+addEventListener("pointerup",()=>drag=false);addEventListener("pointercancel",()=>{drag=false;dsel=0});
+function rmb(){$("#rm").classList.toggle("on",!!rmode)}
+$("#rm").onclick=()=>{rmode=rmode?false:"a";rmb();if(rmode)toast("Aralığın ilk hücresine dokun, sonra son hücresine")};
+addEventListener("keydown",e=>{if(editing||/INPUT|SELECT/.test(e.target.tagName)||$("#v1").style.display==="none")return;
+ const m={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]}[e.key];
+ if(m){e.preventDefault();if(e.shiftKey)pick(sel.r2+m[0],sel.c2+m[1],true);else pick(sel.r+m[0],sel.c+m[1]);return}
+ if((e.ctrlKey||e.metaKey)&&"cxv".includes(e.key)){e.preventDefault();e.key==="v"?paste():copySel(e.key==="x");return}
+ if(e.key==="Enter"||e.key==="F2"){e.preventDefault();edit()}
+ else if(e.key==="Delete"||e.key==="Backspace")clearSel();
+ else if(e.key.length===1&&!e.ctrlKey&&!e.metaKey){e.preventDefault();edit(e.key)}});
+$("#fx").onkeydown=e=>{if(e.key==="Enter"){setV(sel.r,sel.c,e.target.value);e.target.blur();paint()}};
+$("#fx").onchange=e=>{setV(sel.r,sel.c,e.target.value);paint()};
+/* biçimlendirme */
+function each(fn){const g=rng();for(let r=g.r1;r<=g.r2;r++)for(let c=g.c1;c<=g.c2;c++)fn(cell(r,c,1),r,c);paint()}
+function clearSel(){const s=cur(),g=rng();for(let r=g.r1;r<=g.r2;r++)for(let c=g.c1;c<=g.c2;c++){const x=s.d[key(r,c)];if(x)delete x.v}paint()}
+$("#clr").onclick=clearSel;
+$("#bg").onchange=e=>each(x=>x.bg=e.target.value);$("#nobg").onclick=()=>each(x=>delete x.bg);
+document.querySelectorAll("[data-ha]").forEach(b=>b.onclick=()=>each(x=>x.ha=b.dataset.ha));
+document.querySelectorAll("[data-va]").forEach(b=>b.onclick=()=>each(x=>x.va=b.dataset.va));
+const RO=[0,45,-45,90,-90];$("#rot").onclick=()=>{const a=cell(sel.r,sel.c),n=RO[(RO.indexOf(a&&a.rot||0)+1)%5];each(x=>x.rot=n)};
+document.querySelectorAll("[data-sz]").forEach(b=>b.onclick=()=>{const[k,d]=b.dataset.sz.split(","),s=cur(),g=rng();
+ if(k==="cw")for(let c=g.c1;c<=g.c2;c++)s.cw[c]=Math.max(30,Math.min(400,s.cw[c]+ +d));
+ else for(let r=g.r1;r<=g.r2;r++)s.rh[r]=Math.max(18,Math.min(300,s.rh[r]+ +d));build()});
+/* tablo oluştur / sil */
+const tabAt=(r,c)=>cur().t.find(t=>r>=t.r&&r<t.r+t.h&&c>=t.c&&c<t.c+t.w);
+const oldMt=()=>{const m=/^\s*(\d+)\s*[xX×*]\s*(\d+)\s*$/.exec($("#ts").value);if(!m)return toast("Şöyle yaz: 3x2 (3 satır, 2 sütun)");
+ const h=+m[1],w=+m[2],{r,c}=sel;if(h<1||w<1||r+h>ROWS||c+w>COLS)return toast("Tablo sayfaya sığmıyor. Başka bir hücre seç ya da küçült.");
+ for(let i=0;i<h;i++)for(let j=0;j<w;j++){const x=cell(r+i,c+j,1);x.bd=1;if(i===0&&h>1)x.bg="#bfdbfe"}
+ cur().t.push({r,c,h,w});sel={r,c,r2:r+h-1,c2:c+w-1};paint();toast(`${h}x${w} tablo oluşturuldu`)};
+$("#dt").onclick=()=>{const t=tabAt(sel.r,sel.c);if(!t)return toast("Silmek için tablonun içindeki bir hücreyi seç");
+ for(let i=0;i<t.h;i++)for(let j=0;j<t.w;j++)delete cur().d[key(t.r+i,t.c+j)];cur().t=cur().t.filter(x=>x!==t);paint();toast("Tablo silindi")};
+$("#tbg").onchange=e=>{const t=tabAt(sel.r,sel.c);if(!t)return each(x=>x.bg=e.target.value);
+ for(let i=0;i<t.h;i++)for(let j=0;j<t.w;j++)cell(t.r+i,t.c+j,1).bg=e.target.value;paint()};
+/* sekmeler */
+function tabs(){$("#sh").innerHTML=S.map((s,i)=>`<button data-i="${i}" class="${i===si?"on":""}">${s.n}</button>`).join("")+(S.length<6?'<button data-add="1">＋</button>':"");}
+$("#sh").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.add){S.push(mk("Sayfa"+(S.length+1)))}else si=+b.dataset.i;sel={r:0,c:0,r2:0,c2:0};tabs();build()};
+$("#sh").ondblclick=e=>{const b=e.target.closest("button[data-i]");if(!b)return;const n=prompt("Sayfa adı:",S[+b.dataset.i].n);if(n){S[+b.dataset.i].n=n.slice(0,14);tabs()}};
+/* grafik */
+const PAL=["#2563eb","#dc2626","#16a34a","#f59e0b","#7c3aed","#0891b2","#db2777"];
+function cdata(area=rng(),sheet=cur()){const g=area,rows=[];for(let r=g.r1;r<=g.r2;r++){const o=[];for(let c=g.c1;c<=g.c2;c++)o.push(ev(sheet.d[key(r,c)]&&sheet.d[key(r,c)].v,sheet.d));rows.push(o)}
+ const w=g.c2-g.c1+1,lab=w>1&&rows.some(r=>typeof r[0]==="string"&&r[0]!==""),sc=lab?1:0,hd=rows.length>1&&rows[0].slice(sc).every(v=>typeof v==="string"&&v!==""),b=rows.slice(hd?1:0);
+ const ser=[];for(let j=sc;j<w;j++)ser.push({n:hd?rows[0][j]:(w-sc>1?L(g.c1+j):"Değerler"),v:b.map(r=>typeof r[j]==="number"?r[j]:0)});
+ return{lab:b.map((r,i)=>lab?String(r[0]):String(i+1)),ser}}
+function plot(cv,d,t,p,H){const dp=devicePixelRatio||1,W=cv.clientWidth;cv.width=W*dp;cv.height=H*dp;const x=cv.getContext("2d");x.scale(dp,dp);x.clearRect(0,0,W,H);x.font="12px system-ui";
+ const n=d.lab.length,mx=Math.max(1,...d.ser.flatMap(s=>s.v));d={lab:d.lab,ser:d.ser.map(s=>({n:s.n,v:s.v.map(v=>v*p)}))};if(!n||!d.ser.length)return;const max=mx,L0=40,B=H-34,T=22,pw=W-L0-10;
+ d.ser.forEach((s,k)=>{x.fillStyle=PAL[k%7];x.fillRect(L0+k*90,4,10,10);x.fillStyle="#111";x.fillText(String(s.n).slice(0,10),L0+k*90+14,13)});
+ if(t==="pie"){const s=d.ser[0],tot=s.v.reduce((a,b)=>a+Math.max(0,b),0)||1,cx=W/2,cy=(H+8)/2,R=Math.min(H-50,W)/2-8;let a=-Math.PI/2;
+  s.v.forEach((v,i)=>{const da=Math.max(0,v)/tot*2*Math.PI*p;x.beginPath();x.moveTo(cx,cy);x.arc(cx,cy,R,a,a+da);x.fillStyle=PAL[i%7];x.fill();
+   const m=a+da/2;x.fillStyle="#111";x.textAlign="center";x.fillText(d.lab[i]+" %"+Math.round(v/tot*100),cx+Math.cos(m)*(R+2)*.7,cy+Math.sin(m)*(R+2)*.7);a+=da});x.textAlign="left";return}
+ x.strokeStyle="#cbd5e1";x.fillStyle="#475569";for(let i=0;i<=4;i++){const y=B-(B-T)*i/4;x.beginPath();x.moveTo(L0,y);x.lineTo(W-10,y);x.stroke();x.fillText(+(max*i/4).toFixed(1),2,y+4)}
+ const gw=pw/n;d.lab.forEach((l,i)=>{x.fillStyle="#111";x.textAlign="center";x.fillText(l.slice(0,9),L0+gw*i+gw/2,H-16)});x.textAlign="left";
+ d.ser.forEach((s,k)=>{x.fillStyle=x.strokeStyle=PAL[k%7];const bw=gw*.8/d.ser.length;
+  if(t==="bar")s.v.forEach((v,i)=>x.fillRect(L0+gw*i+gw*.1+bw*k,B-(B-T)*v/max,bw,(B-T)*v/max));
+  else{x.lineWidth=3;x.beginPath();s.v.forEach((v,i)=>{const px=L0+gw*i+gw/2,py=B-(B-T)*v/max;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();s.v.forEach((v,i)=>{x.beginPath();x.arc(L0+gw*i+gw/2,B-(B-T)*v/max,4,0,7);x.fill()})}})}
+function anim(cv,d,t,ms,H){const t0=performance.now();cancelAnimationFrame(cv._a);const f=n=>{const p=Math.min(1,(n-t0)/ms);plot(cv,d,t,p,H);if(p<1)cv._a=requestAnimationFrame(f)};f(t0)}
+function draw(){anim($("#cv"),cdata(),$("#ct").value,800/SP,230)}
+$("#ch").onclick=()=>createSheetChart();$("#cx").onclick=()=>$("#cp").style.display="none";$("#ct").onchange=draw;
+
+/* Sayfa üzerine yerleşen, kaynak veri aralığıyla canlı bağlantılı grafikler */
+const chartLayer=document.querySelector('#chartLayer');
+let chartSeq=0, chartRAF=0;
+function queueChartPaint(){
+ if(chartRAF)return;
+ chartRAF=requestAnimationFrame(()=>{chartRAF=0;updateSheetCharts()});
+}
+function createSheetChart(type='bar'){
+ const area={...rng()};
+ if(area.r1===area.r2&&area.c1===area.c2){toast('Önce grafikte kullanılacak veri aralığını seç');return}
+ const sh=cur();if(!sh.charts)sh.charts=[];
+ const x=Math.max(50,42+sh.cw.slice(0,area.c2+1).reduce((a,b)=>a+b,0)+18);
+ const y=Math.max(35,24+sh.rh.slice(0,area.r1).reduce((a,b)=>a+b,0));
+ sh.charts.push({id:++chartSeq,type,area,x,y,w:360,h:250,title:'Grafik '+(sh.charts.length+1)});
+ renderCharts();toast('Grafik sayfaya eklendi. Başlığından taşıyabilir, köşesinden boyutlandırabilirsin.');
+}
+function renderCharts(){
+ if(!chartLayer)return;
+ const sh=cur();const charts=sh.charts||[];
+ chartLayer.replaceChildren();
+ const graphW=42+sh.cw.reduce((a,b)=>a+b,0),graphH=24+sh.rh.reduce((a,b)=>a+b,0);
+ chartLayer.style.width=Math.max(graphW,...charts.map(c=>c.x+c.w+18))+'px';
+ chartLayer.style.height=Math.max(graphH,...charts.map(c=>c.y+c.h+18))+'px';
+ charts.forEach(c=>{
+  const el=document.createElement('div');el.className='sheet-chart';el.dataset.chartId=c.id;
+  el.style.cssText=`left:${c.x}px;top:${c.y}px;width:${c.w}px;height:${c.h}px`;
+  const head=document.createElement('div');head.className='chart-head';
+  const caption=document.createElement('span');caption.className='chart-title';caption.textContent=c.title||'Grafik';
+  const typ=document.createElement('select');typ.className='chart-kind';
+  [['bar','Sütun'],['line','Çizgi'],['pie','Pasta']].forEach(([value,name])=>{let o=document.createElement('option');o.value=value;o.textContent=name;typ.append(o)});
+  typ.value=c.type;typ.title='Grafik türünü değiştir';typ.onchange=()=>{c.type=typ.value;updateSheetCharts()};
+  const del=document.createElement('button');del.type='button';del.className='chart-delete';del.title='Grafiği sil';del.textContent='✕';
+  del.onclick=()=>{sh.charts=sh.charts.filter(v=>v!==c);renderCharts()};
+  head.append(caption,typ,del);
+  const canvas=document.createElement('canvas');canvas.className='chart-embedded';
+  const resize=document.createElement('div');resize.className='chart-resize';resize.title='Boyutu değiştir';
+  el.append(head,canvas,resize);chartLayer.append(el);
+  function startDrag(evt,resizeMode){
+   if(evt.button!==0)return;
+   evt.preventDefault();evt.stopPropagation();const target=evt.currentTarget;
+   target.setPointerCapture(evt.pointerId);
+   const sx=evt.clientX,sy=evt.clientY,ox=c.x,oy=c.y,ow=c.w,oh=c.h;
+   const move=e=>{const dx=e.clientX-sx,dy=e.clientY-sy;
+    if(resizeMode){c.w=Math.max(230,Math.round(ow+dx));c.h=Math.max(170,Math.round(oh+dy));el.style.width=c.w+'px';el.style.height=c.h+'px';updateSheetCharts()}
+    else{c.x=Math.max(0,Math.round(ox+dx));c.y=Math.max(0,Math.round(oy+dy));el.style.left=c.x+'px';el.style.top=c.y+'px'}
+   };
+   const stop=()=>{target.removeEventListener('pointermove',move);target.removeEventListener('pointerup',stop);target.removeEventListener('pointercancel',stop);renderCharts()};
+   target.addEventListener('pointermove',move);target.addEventListener('pointerup',stop);target.addEventListener('pointercancel',stop);
+  }
+  head.addEventListener('pointerdown',e=>{if(e.target===head||e.target===caption)startDrag(e,false)});
+  resize.addEventListener('pointerdown',e=>startDrag(e,true));
+ });
+ updateSheetCharts();
+}
+function updateSheetCharts(){
+ const sh=cur();(sh.charts||[]).forEach(c=>{
+  const el=[...chartLayer.children].find(e=>+e.dataset.chartId===+c.id);
+  if(!el)return;
+  const cv=el.querySelector('canvas');
+  if(cv.clientWidth>0)plot(cv,cdata(c.area,sh),c.type,1,Math.max(90,cv.clientHeight));
+ });
+}
+
+/* ---------- dersler ---------- */
+const LS=[
+{n:"Dört İşlem",s:"=A1+A2   =A1-A2   =A1*A2   =A1/A2",a:"Formül her zaman = işaretiyle başlar. Hücre adlarını (A1, A2) kullanarak toplama (+), çıkarma (-), çarpma (*) ve bölme (/) yapabilirsin. Hücredeki sayı değişirse sonuç kendiliğinden değişir!",d:[12,4],f:"=A1*A2",i:"12 × 4 = 48. Deneme: A1 yerine başka bir sayı yaz."},
+{n:"TOPLA",s:"=TOPLA(A1:A5)",a:"Seçilen aralıktaki bütün sayıları toplar. A1:A5 ‘A1’den A5’e kadar’ demektir.",d:[4,7,2,9,8],f:"=TOPLA(A1:A5)",i:"4+7+2+9+8 = 30. Alışveriş listesinin toplamı için harika!"},
+{n:"ORTALAMA",s:"=ORTALAMA(A1:A4)",a:"Sayıları toplar ve kaç sayı varsa ona böler. Not ortalaması bulmak için kullanılır.",d:[10,20,30,40],f:"=ORTALAMA(A1:A4)",i:"(10+20+30+40) ÷ 4 = 25"},
+{n:"MİN",s:"=MİN(A1:A4)",a:"Aralıktaki en küçük sayıyı bulur. En düşük notu ya da en ucuz fiyatı bulmak için kullan.",d:[12,5,9,20],f:"=MİN(A1:A4)",i:"En küçük sayı 5"},
+{n:"MAK",s:"=MAK(A1:A4)",a:"Aralıktaki en büyük sayıyı bulur. En yüksek notu ya da en uzun boyu bulmak için kullan.",d:[12,5,9,20],f:"=MAK(A1:A4)",i:"En büyük sayı 20"},
+{n:"SAY",s:"=SAY(A1:A5)",a:"Aralıkta içinde sayı olan hücrelerin kaç tane olduğunu sayar. Yazılar sayılmaz.",d:[3,8,"elma",5,1],f:"=SAY(A1:A5)",i:"4 hücrede sayı var, ‘elma’ sayılmadı."},
+{n:"EĞER",s:'=EĞER(A1>=50;"Geçti";"Kaldı")',a:"Bir şartı kontrol eder. Şart doğruysa ilk değeri, yanlışsa ikinci değeri yazar. Yazıları tırnak içine yazmayı unutma. Şart işaretleri: > < >= <= = <>",d:[65],f:'=EĞER(A1>=50;"Geçti";"Kaldı")',i:"65, 50’den büyük olduğu için ‘Geçti’. A1’i 30 yaparsan ‘Kaldı’ olur."},
+{n:"YUVARLA",s:"=YUVARLA(A1;1)",a:"Sayıyı istediğin ondalık basamağa yuvarlar. İkinci sayı kaç basamak kalacağını söyler.",d:[3.14159],f:"=YUVARLA(A1;1)",i:"3,14159 → virgülden sonra 1 basamak → 3,1"},
+{n:"MUTLAK",s:"=MUTLAK(A1)",a:"Sayının işaretini kaldırır; sayı doğrudaki uzaklığını verir. Eksi sayı artı olur.",d:[-15],f:"=MUTLAK(A1)",i:"-15 → 15"},
+{n:"KAREKÖK",s:"=KAREKÖK(A1)",a:"Karesi o sayıya eşit olan sayıyı bulur.",d:[49],f:"=KAREKÖK(A1)",i:"7 × 7 = 49 olduğu için sonuç 7"},
+{n:"EĞERSAY",s:'=EĞERSAY(A1:A5;">50")',a:"Şarta uyan hücreleri sayar. Kaç öğrenci 50’nin üstünde aldı? gibi sorular için kullan.",d:[70,40,90,55,10],f:'=EĞERSAY(A1:A5;">50")',i:"70, 90 ve 55 şartı sağlar → 3 hücre"}];
+let li=-1,tm=[],SP=1;
+const lnav=()=>LS.map((l,i)=>`<button data-i="${i}" class="${i===li?"on":""}">${i||""}${i?". ":""}${l.n}</button>`).join("");
+function lessons(){if(LS[li].ct){$("#ln").innerHTML=lnav();return chartLesson(LS[li])}$("#ln").innerHTML=LS.map((l,i)=>`<button data-i="${i}" class="${i===li?"on":""}">${i||""}${i?". ":""}${l.n}</button>`).join("");const l=LS[li],d={};l.d.forEach((v,i)=>d["A"+(i+1)]={v:String(v)});
+ let g="<table class='mini'><tr><th></th><th>A</th><th>B</th><th>C</th></tr>";for(let r=1;r<=Math.max(l.d.length,2);r++)g+=`<tr><th>${r}</th><td id="m${r}">${l.d[r-1]!==undefined?l.d[r-1]:""}</td><td></td><td id="mc${r}"></td></tr>`;
+ $("#lc").innerHTML=`<h2>${li?li+". ":""}${l.n}</h2><p>${l.a}</p><b>Nasıl yazılır?</b><code class="sx">${l.s.replace(/</g,"&lt;")}</code>${g}</table><div id="st">▶ Animasyonu izlemek için düğmeye bas</div><label>Hız <select id="sp"><option value="0.5">0,5x</option><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></label> <button class="pb" id="pl">▶ Animasyonu oynat</button><button class="pb" id="tr" style="background:#2563eb">📋 Tabloda dene</button><p>💡 ${l.i}</p>`;
+ $("#sp").value=SP;$("#sp").onchange=e=>SP=+e.target.value;$("#pl").onclick=()=>play();$("#tr").onclick=()=>{const s=S[2];s.d={};l.d.forEach((v,i)=>s.d["A"+(i+1)]={v:String(v)});s.d.C1={v:l.f,bd:1,bg:"#bbf7d0"};si=2;sel={r:0,c:2,r2:0,c2:2};show(1);tabs();build();toast("Sayfa3’e aktarıldı. Değerleri değiştir, sonucu gör!")}}
+function play(){tm.forEach(clearTimeout);tm=[];const l=LS[li],d={};l.d.forEach((v,i)=>d["A"+(i+1)]={v:String(v)});
+ document.querySelectorAll(".mini td").forEach(t=>t.className="");$("#mc1").textContent="";const st=$("#st"),at=(f,ms)=>tm.push(setTimeout(f,ms/SP));
+ st.textContent="1️⃣ Önce formülün kullanacağı hücreler seçilir…";let t=600;
+ l.d.forEach((v,i)=>{at(()=>{$("#m"+(i+1)).className="hl"},t);t+=450});
+ at(()=>{st.textContent="2️⃣ C1 hücresine formül yazılıyor…";$("#mc1").className=""},t);t+=500;
+ for(let k=1;k<=l.f.length;k++){at(()=>{$("#mc1").textContent=l.f.slice(0,k)},t);t+=60}
+ t+=500;at(()=>{st.textContent="3️⃣ Enter’a basınca sonuç çıkar!";$("#mc1").textContent=fmt(ev(l.f,d));$("#mc1").className="res"},t)}
+$("#ln").onclick=e=>{const b=e.target.closest("button");if(b){li=+b.dataset.i;tm.forEach(clearTimeout);lessons()}};
+function show(n){$("#v1").style.display=n===1?"flex":"none";$("#ls").style.display=n===0?"block":"none";$("#ex").style.display=n===2?"block":"none";$("#about").style.display=n===3?"block":"none";[["m1",1],["m2",0],["m3",2],["m4",3]].forEach(([i,k])=>$("#"+i).classList.toggle("on",n===k));if(n===1)paint();else if(n===0)lessons();else if(n===2)exam();else $("#about").scrollTop=0}
+$("#m1").onclick=()=>show(1);$("#m2").onclick=()=>show(0);$("#m3").onclick=()=>show(2);$("#m4").onclick=()=>show(3);$("#about").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b)show(+b.dataset.go)});addEventListener("resize",()=>{if($("#cp").style.display==="block")draw()});
+/* yazı tipi */
+$("#ff").onchange=e=>{const v=e.target.value;each(x=>{v?x.ff=v:delete x.ff})};$("#fs").onchange=e=>{const v=+e.target.value;each(x=>{v?x.fs=v:delete x.fs})};
+/* kes-kopyala-yapıştır + sağ tık menüsü */
+const cm=$("#cm"),cp=o=>JSON.parse(JSON.stringify(o));let clip=null,CMA=[],lp;
+function copySel(cut){const g=rng(),s=cur();clip={h:g.r2-g.r1+1,w:g.c2-g.c1+1,c:[]};for(let r=g.r1;r<=g.r2;r++)for(let c=g.c1;c<=g.c2;c++){const k=key(r,c);clip.c.push(cp(s.d[k]||{}));if(cut)delete s.d[k]}paint();toast(cut?"Kesildi":"Kopyalandı")}
+function paste(){if(!clip)return toast("Önce kopyala ya da kes");const s=cur();for(let i=0;i<clip.h;i++)for(let j=0;j<clip.w;j++)if(sel.r+i<ROWS&&sel.c+j<COLS)s.d[key(sel.r+i,sel.c+j)]=cp(clip.c[i*clip.w+j]);paint()}
+function openCm(x,y,t){const td=t.closest&&t.closest("td");if(!td)return;const r=+td.dataset.r,c=+td.dataset.c,g=rng();if(r<g.r1||r>g.r2||c<g.c1||c>g.c2)pick(r,c);
+ CMA=[["✂️ Kes",()=>copySel(1)],["📄 Kopyala",()=>copySel()],["📋 Yapıştır",paste],["⬚ Tümünü seç",selAll],["↩ Geri al",undo],["↪ Yinele",redo],["▦ Seçimi tablo yap",selToTable],["▦ Tablo ekle",openMd],["📈 Grafik oluştur",()=>$("#ch").click()],["🗑 Tabloyu sil",()=>$("#dt").click()],["⌫ Temizle",clearSel]];
+ cm.innerHTML=CMA.map((a,i)=>`<button data-i="${i}">${a[0]}</button>`).join("");cm.style.display="block";cm.style.left=Math.max(4,Math.min(x,innerWidth-180))+"px";cm.style.top=Math.max(4,Math.min(y,innerHeight-460))+"px"}
+cm.onclick=e=>{const b=e.target.closest("button");if(b){cm.style.display="none";CMA[+b.dataset.i][1]()}};
+addEventListener("pointerdown",e=>{if(!cm.contains(e.target))cm.style.display="none"},true);
+g.addEventListener("contextmenu",e=>{e.preventDefault();openCm(e.clientX,e.clientY,e.target)});
+g.addEventListener("pointerdown",e=>{if(e.pointerType==="touch"){clearTimeout(lp);const X=e.clientX,Y=e.clientY,T=e.target;lp=setTimeout(()=>openCm(X,Y,T),650)}});
+["pointerup","pointermove","pointercancel"].forEach(n=>g.addEventListener(n,()=>clearTimeout(lp)));
+/* tablo ekle penceresi */
+const TS=[{n:"Mavi",h:"#bfdbfe"},{n:"Yeşil",h:"#bbf7d0"},{n:"Turuncu",h:"#fed7aa"},{n:"Mor zebra",h:"#ddd6fe",z:"#f5f3ff"},{n:"Gri",h:"#e5e7eb"}];
+const TP=[{n:"Boş tablo"},{n:"Not çizelgesi",f:(r,c)=>[["Öğrenci","Not 1","Not 2","Ortalama"],...["Ali","Ayşe","Can"].map((a,i)=>[a,70+i*5,80-i*5,`=ORTALAMA(${key(r+i+1,c+1)}:${key(r+i+1,c+2)})`])]},{n:"Alışveriş listesi",f:(r,c)=>[["Ürün","Adet","Fiyat","Tutar"],...[["Defter",3,25],["Kalem",5,8]].map((a,i)=>[...a,`=${key(r+i+1,c+1)}*${key(r+i+1,c+2)}`]),["Toplam","","",`=TOPLA(${key(r+1,c+3)}:${key(r+2,c+3)})`]]}];
+let tsi=0,tpi=0;
+function chips(){$("#tsy").innerHTML="Renk: "+TS.map((t,i)=>`<button data-i="${i}" style="background:${t.h};border:3px solid ${i===tsi?"#111":"transparent"};border-radius:8px;padding:8px 10px;margin:3px;cursor:pointer;color:#111">${t.n}</button>`).join("")}
+function openMd(){const g0=rng();if(g0.r1!==g0.r2||g0.c1!==g0.c2){$("#tr1").value=g0.r2-g0.r1+1;$("#tc1").value=g0.c2-g0.c1+1;tpi=0;sel={r:g0.r1,c:g0.c1,r2:g0.r1,c2:g0.c1};paint()}$("#tp").innerHTML=TP.map((t,i)=>`<option value="${i}">${t.n}</option>`).join("");$("#tp").value=tpi;chips();$("#md").style.display="flex"}
+$("#tsy").onclick=e=>{const b=e.target.closest("button");if(b){tsi=+b.dataset.i;chips()}};
+$("#tp").onchange=e=>{tpi=+e.target.value;const t=TP[tpi];if(t.f){const a=t.f(0,0);$("#tr1").value=a.length;$("#tc1").value=a[0].length}};
+$("#tcn").onclick=()=>$("#md").style.display="none";$("#mt").onclick=openMd;$("#tok").onclick=()=>{const tp=TP[tpi],{r,c}=sel,rows=tp.f?tp.f(r,c):null,h=rows?rows.length:+$("#tr1").value,w=rows?rows[0].length:+$("#tc1").value,hd=$("#th1").checked,st=TS[tsi];
+ if(!(h>=1&&w>=1)||r+h>ROWS||c+w>COLS)return toast("Tablo sayfaya sığmıyor. Başka bir hücre seç ya da küçült.");
+ for(let i=0;i<h;i++)for(let j=0;j<w;j++){const x=cell(r+i,c+j,1);x.bd=1;if(rows)x.v=String(rows[i][j]);if(i===0&&hd&&h>1)x.bg=st.h;else if(st.z&&i%2===0)x.bg=st.z}
+ cur().t.push({r,c,h,w});sel={r,c,r2:r+h-1,c2:c+w-1};$("#md").style.display="none";paint();toast(`${h} satır x ${w} sütun tablo eklendi`)};
+/* grafik dersleri */
+function sheet(rows,inp){const w=Math.max(...rows.map(r=>r.length),inp?3:0);let h="<div style='overflow-x:auto'><table class='mini'><tr><th></th>"+[...Array(w)].map((_,i)=>"<th>"+L(i)+"</th>").join("")+"</tr>";
+ rows.forEach((r,i)=>{h+=`<tr><th>${i+1}</th>`;for(let c=0;c<w;c++)h+=`<td>${inp&&i===0&&c===2?inp:(r[c]??"")}</td>`;h+="</tr>"});return h+"</table></div>"}
+LS.push({n:"📊 Sütun grafik",ct:"bar",a:"Sütun grafik değerleri uzun ya da kısa çubuklarla gösterir. Değerleri karşılaştırmak için en iyisidir.",lab:["Pzt","Sal","Çar","Per","Cum"],v:[3,5,2,6,4],i:"Çubuk ne kadar uzunsa değer o kadar büyüktür."},{n:"📈 Çizgi grafik",ct:"line",a:"Çizgi grafik, bir şeyin zamanla nasıl değiştiğini gösterir (boyun, sıcaklık, not gibi).",lab:["Eki","Kas","Ara","Oca","Şub"],v:[2,4,3,6,8],i:"Çizgi yukarı çıkıyorsa değer artıyor demektir."},{n:"🥧 Daire grafik",ct:"pie",a:"Daire (pasta) grafik, bir bütünün parçalarını gösterir. Her dilim bir payı temsil eder.",lab:["Elma","Muz","Çilek","Kiraz"],v:[5,3,2,6],i:"Büyük dilim, büyük paydır."});
+function chartLesson(l){const rows=[["Ad","Değer"],...l.lab.map((a,i)=>[a,l.v[i]])];
+ $("#lc").innerHTML=`<h2>${l.n}</h2><p>${l.a}</p><b>Nasıl yapılır?</b><ol><li>Adları 1. sütuna, sayıları 2. sütuna yaz.</li><li>Verileri fareyle seç.</li><li>📈 Grafik düğmesine bas, türünü seç.</li></ol>${sheet(rows)}<div id="st"></div><canvas id="cl"></canvas><label>Hız <select id="sp"><option value="0.5">0,5x</option><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></label> <button class="pb" id="pl">▶ Tekrar oynat</button><button class="pb" id="tr" style="background:#2563eb">📋 Tabloda dene</button><p>💡 ${l.i}</p>`;
+ $("#sp").value=SP;$("#sp").onchange=e=>SP=+e.target.value;
+ const run=()=>{tm.forEach(clearTimeout);tm=[];const at=(f,ms)=>tm.push(setTimeout(f,ms/SP)),st=$("#st");st.textContent="1️⃣ Veriler seçiliyor…";$("#cl").getContext("2d").clearRect(0,0,9999,999);at(()=>st.textContent="2️⃣ Grafik türü seçiliyor…",900);at(()=>{st.textContent="3️⃣ Grafik çiziliyor!";anim($("#cl"),{lab:l.lab,ser:[{n:"Değer",v:l.v}]},l.ct,1600/SP,210)},1800)};
+ $("#pl").onclick=run;$("#tr").onclick=()=>{const s=S[2];s.d={};rows.forEach((r,i)=>r.forEach((v,j)=>s.d[key(i,j)]={v:String(v),bd:1,bg:i?undefined:"#bfdbfe"}));si=2;sel={r:0,c:0,r2:rows.length-1,c2:1};show(1);tabs();build();createSheetChart(l.ct)};run()}
+/* sınav */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const Q=[
+{t:"mc",q:"Formüller hangi işaretle başlar?",o:["#","@","=","?"],a:2},
+{t:"mc",tab:[["Ad","Not"],["Ali",70],["Ayşe",90],["Can",50]],q:"Tabloya bak: Ayşe’nin notu hangi hücrededir?",o:["A3","B3","B2","C3"],a:1},
+{t:"mc",bars:[["Pzt",3],["Sal",7],["Çar",5]],q:"Grafiğe göre en yüksek değer hangi güne aittir?",o:["Pazartesi","Salı","Çarşamba","Hepsi eşit"],a:1},
+{t:"mc",q:"A1 hücresi 45 iken =EĞER(A1>=50;\"Geçti\";\"Kaldı\") formülünün sonucu nedir?",o:["Geçti","Kaldı","45","Hata"],a:1},
+{t:"mc",q:"Hücredeki yazıyı sağa ya da sola yaslamak için hangi özelliği kullanırız?",o:["Hizalama","Dolgu rengi","Grafik","Formül"],a:0},
+{t:"app",d:[5,8,12,3],x:28,f:"=TOPLA(A1:A4)",q:"A1:A4 hücrelerindeki sayıların toplamını C1 hücresine formülle bul."},
+{t:"app",d:[60,45,80,30],x:80,f:"=MAK(A1:A4)",q:"A1:A4 içindeki en büyük sayıyı C1 hücresine formülle bul."},
+{t:"app",d:[10,20,30],x:20,f:"=ORTALAMA(A1:A3)",q:"A1:A3 sayılarının ortalamasını C1 hücresine formülle bul."},
+{t:"app",d:[72],x:"Geçti",f:"=EĞER(A1>=50;\"Geçti\";\"Kaldı\")",q:"A1’deki not 50 ve üstüyse “Geçti”, değilse “Kaldı” yazdıran formülü C1’e yaz."},
+{t:"app",d:[70,40,90,55],x:3,f:"=EĞERSAY(A1:A4;\">50\")",q:"A1:A4 içinde 50’den büyük kaç sayı var? C1 hücresine formülle bul."}];
+let RS=[];try{RS=JSON.parse(localStorage.getItem("xl_sinav")||"[]")}catch(e){}
+const svRS=()=>{try{localStorage.setItem("xl_sinav",JSON.stringify(RS))}catch(e){}};
+function qcard(q,i,st){let b=q.tab?sheet(q.tab):q.bars?"<div class='bars'>"+q.bars.map(x=>`<div><b>${x[1]}</b><i style="height:${x[1]*12}px"></i>${x[0]}</div>`).join("")+"</div>":"";const ds=st?"disabled":"";
+ if(q.t==="mc")b+=q.o.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}" ${ds} ${st&&st.a!==null&&+st.a===j?"checked":""}> ${esc(o)}</label>`).join("");
+ else if(q.t==="ch")b+=chq(q,i,st);else if(q.t==="tb")b+=tbq(q,i,st);else if(q.t==="fo")b+=foq(i,st);else b+=sheet(q.d.map((v,k)=>q.nm?[v,q.nm[k]]:[v]),`<input class="qi" id="q${i}" placeholder="=..." ${ds} value="${st?esc(st.a||""):""}">`);
+ const f=st?`<div class="fb">${st.ok?"✔ Doğru":"✘ Yanlış — Doğru cevap: "+esc(q.t==="mc"?q.o[q.a]:q.f)}</div>`:"";
+ return `<div class="card q ${st?(st.ok?"ok":"bad"):""}"><b>${i+1}. ${esc(q.q)}</b>${b}${f}</div>`}
+function exam(){const E=$("#ex");
+ E.innerHTML=`<div class="card"><h2>📝 Uygulamalı Sınav</h2><p>Adını yaz ve başla. Çoktan seçmeli (yazı ve görsel tabanlı) sorular ile tabloya formül yazacağın uygulama soruları var. Sonuçların kaydedilir.</p><input id="en" placeholder="Adın Soyadın" style="padding:10px;width:100%;max-width:300px;font-size:16px"><br><button class="pb" id="eb">Başla</button><button class="pb" id="er" style="background:#2563eb">📊 Kayıtlı sonuçlar</button></div>`;
+ $("#eb").onclick=()=>{const ad=$("#en").value.trim();if(!ad)return toast("Önce adını yaz");
+  E.innerHTML=Q.map((q,i)=>qcard(q,i)).join("")+'<div class="card"><button class="pb" id="ef">✅ Sınavı bitir</button></div>';E.scrollTop=0;
+  Q.forEach((q,i)=>{if(q.t==="fo")fp(i)});$("#ef").onclick=()=>{const res=Q.map((q,i)=>{let a,ok=false;if(q.t==="mc"){const r=E.querySelector(`input[name=q${i}]:checked`);a=r?r.value:null;ok=a!==null&&+a===q.a}else if(q.t==="ch"){a=$("#q"+i).value;ok=a===q.ct}else if(q.t==="tb"){const d={},ks=Object.keys(q.cells);ks.forEach(k=>d[k]={v:$("#q"+i+"_"+k).value});ok=ks.every(k=>String(ev(d[k].v,d)).toLowerCase()===String(q.cells[k]).toLowerCase())&&(q.fm||[]).every(k=>d[k].v.trim()[0]==="=");a=JSON.stringify(Object.fromEntries(ks.map(k=>[k,d[k].v])))}else if(q.t==="fo"){a=$("#ff"+i).value+"|"+$("#fs"+i).value;ok=a===q.ff+"|"+q.fs}else{a=$("#q"+i).value.trim();ok=a[0]==="="&&[[q.d,q.x],...(q.alt||[])].every(([dd,x])=>{const m={};dd.forEach((v,k)=>m["A"+(k+1)]={v:String(v)});return String(ev(a,m)).toLowerCase()===String(x).toLowerCase()})}return{a,ok}});
+   const p=res.filter(r=>r.ok).length;RS.push({ad,t:new Date().toLocaleString("tr-TR"),p,n:Q.length,c:res});svRS();
+   E.innerHTML=`<div class="card"><h2>${esc(ad)}, sonucun: ${p}/${Q.length}</h2><p>Puan: <b>${Math.round(p/Q.length*100)}</b>. Doğru cevaplar yeşil, yanlışlar kırmızı gösterilir.</p><button class="pb" id="ea">Yeni sınav</button></div>`+Q.map((q,i)=>qcard(q,i,res[i])).join("");$("#ea").onclick=exam;E.scrollTop=0;Q.forEach((q,i)=>{if(q.t==="ch")dq(i,res[i].a);if(q.t==="fo")fp(i)})}};
+ $("#er").onclick=()=>{E.innerHTML=`<div class="card"><h2>📊 Kayıtlı sonuçlar</h2>`+(RS.length?`<div style="overflow-x:auto"><table class="mini"><tr><th>Öğrenci</th><th>Tarih</th><th>Doğru</th><th>Soru soru</th></tr>${RS.map(r=>`<tr><td>${esc(r.ad)}</td><td>${esc(r.t)}</td><td>${r.p}/${r.n}</td><td style="letter-spacing:2px">${r.c.map(x=>x.ok?"✔":"✘").join("")}</td></tr>`).join("")}</table></div>`:"<p>Henüz kayıt yok.</p>")+`<button class="pb" id="eb2">Geri</button><button class="pb" id="ec" style="background:#dc2626">Kayıtları sil</button></div>`;
+  $("#eb2").onclick=exam;$("#ec").onclick=()=>{if(confirm("Bütün kayıtlar silinsin mi?")){RS=[];svRS();exam()}}}}
+/* yeni sınav soruları */
+Q.push(
+{t:"app",d:[14,6],x:20,alt:[[[3,9],12]],f:"=A1+A2",q:"A1 ve A2’deki iki sayıyı toplayıp sonucu C1’e formülle yaz."},
+{t:"app",d:[7,8],x:56,alt:[[[4,5],20]],f:"=A1*A2",q:"A1 ve A2’deki iki sayıyı çarpıp sonucu C1’e formülle yaz."},
+{t:"app",d:[70,80,90],x:80,alt:[[[50,60,70],60]],f:"=ORTALAMA(A1:A3)",q:"Bir öğrencinin üç sınav notu A1:A3’te. Not ortalamasını C1’e formülle bul."},
+{t:"app",d:[65],x:"Geçti",alt:[[[40],"Kaldı"],[[50],"Geçti"]],f:'=EĞER(A1>=50;"Geçti";"Kaldı")',q:"Geçme notu 50’dir. A1’deki not 50 ve üstüyse “Geçti”, değilse “Kaldı” yazan formülü C1’e yaz."},
+{t:"app",nm:["Türkçe","Matematik","Fen","Sosyal"],d:[90,80,85,95],x:"Takdir",alt:[[[72,68,75,70],"Teşekkür"],[[60,95,95,95],"Belge yok"]],f:'=EĞER(A1<70;"Belge yok";EĞER(ORTALAMA(A1:A4)>=85;"Takdir";EĞER(ORTALAMA(A1:A4)>=70;"Teşekkür";"Belge yok")))',q:"Kural: Türkçe notu en az 70 olmalı. Ders ortalaması en az 85 ise “Takdir”, en az 70 ise “Teşekkür”, diğer durumda “Belge yok” yaz. Notlar A sütununda (A1 Türkçe), ders adları B sütununda. Sonucu C1’e formülle yaz."},
+{t:"ch",ct:"line",lab:["Pzt","Sal","Çar","Per","Cum"],v:[18,20,19,23,25],f:"Çizgi grafik",q:"Bir haftadaki hava sıcaklığının günlere göre değişimini göstermek için hangi grafik uygun? Seç ve grafiği oluşturup bak."},
+{t:"ch",ct:"pie",lab:["Elma","Muz","Çilek"],v:[5,3,2],f:"Daire grafik",q:"Sınıfın sevdiği meyvelerin toplam içindeki payını göstermek için hangi grafik türü en uygun?"},
+{t:"ch",ct:"bar",lab:["Ali","Ayşe","Can","Zeynep"],v:[150,142,155,148],f:"Sütun grafik",q:"Dört arkadaşın boyunu birbiriyle karşılaştırmak için hangi grafik türü en uygun?"},
+{t:"tb",cells:{A1:"Ad",B1:"Not",A2:"Ali",B2:80},f:"A1=Ad, B1=Not, A2=Ali, B2=80",q:"Mini tabloya şunları yaz: A1’e Ad, B1’e Not, A2’ye Ali, B2’ye 80."},
+{t:"tb",cells:{A1:12,A2:8,A3:20},fm:["A3"],f:"A1=12, A2=8, A3=\"=A1+A2\"",q:"A1’e 12, A2’ye 8 yaz. A3’e iki sayının toplamını formülle bul."},
+{t:"fo",ff:"Courier New",fs:24,f:"Courier New, 24 punto",q:"Örnek yazıyı Courier New yazı tipi ve 24 punto yap."});
+const FN=["Arial","Times New Roman","Courier New","Comic Sans MS","Verdana"],FZ=[12,16,24,32];
+function chq(q,i,st){return sheet([["Ad","Değer"],...q.lab.map((a,k)=>[a,q.v[k]])])+`<select data-k="ch" data-q="${i}" id="q${i}" ${st?"disabled":""}><option value="">Grafik türü seç</option>${[["bar","Sütun"],["line","Çizgi"],["pie","Daire"]].map(o=>`<option value="${o[0]}" ${st&&st.a===o[0]?"selected":""}>${o[1]}</option>`).join("")}</select><canvas class="qc" id="c${i}"></canvas>`}
+function dq(i,t){const q=Q[i],cv=$("#c"+i);if(!t)return cv.getContext("2d").clearRect(0,0,9999,999);anim(cv,{lab:q.lab,ser:[{n:"Değer",v:q.v}]},t,900/SP,170)}
+function tbq(q,i,st){const v=st?JSON.parse(st.a||"{}"):{};let h="<table class='mini'><tr><th></th><th>A</th><th>B</th><th>C</th></tr>";for(let r=1;r<=4;r++){h+=`<tr><th>${r}</th>`;for(const c of"ABC"){const k=c+r;h+=`<td><input class="qi" style="width:80px" id="q${i}_${k}" ${st?"disabled":""} value="${esc(v[k]||"")}"></td>`}h+="</tr>"}return h+"</table>"}
+function foq(i,st){const[f,z]=st?(st.a||"|").split("|"):["",""],d=st?"disabled":"";return `<p id="pv${i}" style="font-size:16px;margin:8px 0">Merhaba Excel! 123</p><select id="ff${i}" data-k="fo" data-q="${i}" ${d}><option value="">Yazı tipi</option>${FN.map(n=>`<option ${f===n?"selected":""}>${n}</option>`).join("")}</select> <select id="fs${i}" data-k="fo" data-q="${i}" ${d}><option value="16">Punto</option>${FZ.map(n=>`<option ${z==n?"selected":""}>${n}</option>`).join("")}</select>`}
+function fp(i){const p=$("#pv"+i);p.style.fontFamily=$("#ff"+i).value;p.style.fontSize=$("#fs"+i).value+"px"}
+$("#ex").addEventListener("change",e=>{const t=e.target,i=+t.dataset.q;if(t.dataset.k==="ch")dq(i,t.value);if(t.dataset.k==="fo")fp(i)});
+/* ders paneli */
+const CAT=[["🧮 Temel işlemler","#2563eb",[0]],["📐 Toplama ve istatistik","#16a34a",[1,2,3,4,5]],["🔧 Sayı fonksiyonları","#9333ea",[7,8,9]],["🧠 Koşul ve mantık","#ea580c",[6,10]],["📊 Grafikler","#0891b2",[11,12,13]],["⌨️ Kısayollar","#be185d",[14,15,16,17,18]]];
+function dash(){$("#lc").innerHTML=`<h2>📚 Ders Paneli</h2><p>Bir kategori seç, ders kutusuna tıkla. Toplam <b>${LS.length}</b> ders var.</p><div class="dg">`+CAT.map(c=>`<div class="dc" style="border-top:5px solid ${c[1]}"><h3>${c[0]}</h3>${c[2].map(i=>`<button class="dt" data-i="${i}">${LS[i].n}</button>`).join("")}</div>`).join("")+"</div>"}
+$("#lc").addEventListener("click",e=>{const b=e.target.closest(".dt");if(b){li=+b.dataset.i;tm.forEach(clearTimeout);lessons()}});
+const _ls=lessons;lessons=function(){if(li<0){$("#ln").innerHTML="";return dash()}LS[li].sc?shortcutLesson(LS[li]):_ls();$("#ln").innerHTML='<button data-i="-1">⬅ Ders paneli</button>'};
+/* şerit sekmeleri, kenarlık, durum çubuğu */
+const TB=$("#v1 .tb");
+TB.insertAdjacentHTML("beforeend",`<span class="sp" data-g="g"></span><label data-g="g">Çizgi<select id="bst"><option value="solid">Tek çizgi</option><option value="double">Çift çizgi</option><option value="dashed">Kesik çizgi</option><option value="dotted">Noktalı</option><option value="none">Çizgi yok</option></select></label><label data-g="g">Kalınlık<select id="bw"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></label><label data-g="g">Renk<input type="color" id="bc" value="#334155"></label><button data-g="g" id="ba">▦ Kenarlık uygula</button><button data-g="s" id="ns">＋ Yeni sayfa</button><span data-g="f" style="font-size:12px">Sayıları seç, sonra bir düğmeye bas:</span><button data-g="f" data-fn="TOPLA">Σ Toplam</button><button data-g="f" data-fn="ORTALAMA">Ortalama</button><button data-g="f" data-fn="MIN">Min</button><button data-g="f" data-fn="MAK">Maks</button><button data-g="f" data-fn="SAY">Say</button>`);
+let pg="g";[...TB.children].forEach(el=>{if(!el.dataset.g)el.dataset.g=el.classList.contains("sp")?pg:(el.matches("#mt,#dt,#ch")||el.querySelector("#tbg"))?"e":el.dataset.sz?"s":"g";pg=el.dataset.g});
+TB.insertAdjacentHTML("beforebegin",'<div id="rb"><button data-t="g">Giriş</button><button data-t="e">Ekle</button><button data-t="f">Formüller</button><button data-t="s">Sayfa Düzeni</button></div>');
+function setTab(t){[...TB.children].forEach(el=>el.style.display=el.dataset.g===t?"":"none");document.querySelectorAll("#rb button").forEach(b=>b.classList.toggle("on",b.dataset.t===t))}
+$("#rb").onclick=e=>{const b=e.target.closest("button");if(b)setTab(b.dataset.t)};setTab("g");
+$("#ns").onclick=()=>{const b=document.querySelector("#sh [data-add]");b?b.click():toast("En fazla 6 sayfa")};
+$("#ba").onclick=()=>{const s=$("#bst").value,w=+$("#bw").value,c=$("#bc").value,f=x=>{if(s==="none"){delete x.bs;delete x.bd}else x.bs={s,w:s==="double"?Math.max(3,w):w,c}},t=tabAt(sel.r,sel.c);
+ if(t&&sel.r===sel.r2&&sel.c===sel.c2){for(let i=0;i<t.h;i++)for(let j=0;j<t.w;j++)f(cell(t.r+i,t.c+j,1));paint()}else each(f)};
+TB.addEventListener("click",e=>{const b=e.target.closest("[data-fn]");if(!b)return;const g=rng();if(g.r1===g.r2&&g.c1===g.c2)return toast("Önce sayıların olduğu hücreleri seç");
+ const rg=key(g.r1,g.c1)+":"+key(g.r2,g.c2),row=g.r1===g.r2,tr=row?g.r1:g.r2+1,tc=row?g.c2+1:g.c1;if(tr>=ROWS||tc>=COLS)return toast("Sonuç için yer yok");
+ setV(tr,tc,`=${b.dataset.fn}(${rg})`);pick(tr,tc)});
+function stats(){const g=rng(),s=cur();let n=0,sum=0,cnt=0;for(let r=g.r1;r<=g.r2;r++)for(let c=g.c1;c<=g.c2;c++){const x=s.d[key(r,c)],v=ev(x&&x.v,s.d);if(v!=="")cnt++;if(typeof v==="number"){n++;sum+=v}}$("#stb").textContent=n?`Ortalama: ${fmt(sum/n)}    Say: ${cnt}    Toplam: ${fmt(sum)}`:"Hazır"}
+const _p=paint;paint=function(){_p();stats();queueChartPaint()};
+/* seçim, grafik, geri al */
+let smode=false,cmode=false,dsel=0;
+const setTA=()=>$("#wrap").style.touchAction=(smode||cmode)?"none":"";
+function openChart(){createSheetChart()}
+$("#ch").onclick=()=>{const g=rng();if(g.r1!==g.r2||g.c1!==g.c2)openChart();else{cmode=true;setTA();toast("Verileri sürükleyerek seç, bırakınca grafik çıkar")}};
+addEventListener("pointerup",()=>{if(!dsel)return;dsel=0;const g=rng(),m=g.r1!==g.r2||g.c1!==g.c2;if(cmode&&m){cmode=false;setTA();openChart();toast("Seçilen alandan grafik çizildi")}else if(m&&$("#cp").style.display==="block")draw()});
+g.addEventListener("dblclick",e=>{const td=e.target.closest("td");if(td&&!editing){pick(+td.dataset.r,+td.dataset.c);edit()}});
+function selAll(){sel={r:0,c:0,r2:ROWS-1,c2:COLS-1};paint()}
+function selToTable(){const g=rng();if(g.r1===g.r2&&g.c1===g.c2)return toast("Önce tablo olacak alanı sürükleyerek seç");const st=TS[tsi],h=g.r2-g.r1+1,w=g.c2-g.c1+1;
+ for(let i=0;i<h;i++)for(let j=0;j<w;j++){const x=cell(g.r1+i,g.c1+j,1);x.bd=1;if(i===0&&h>1)x.bg=st.h;else if(st.z&&i%2===0)x.bg=st.z}cur().t.push({r:g.r1,c:g.c1,h,w});paint();toast(`${h} satır x ${w} sütun tablo yapıldı`)}
+const ser=()=>JSON.stringify({S,si});let U=[],R=[],rs=null;
+function snap(){if($("#v1").style.display==="none")return;const s=ser();if(rs!==null&&s!==rs){R=[];rs=null}if(U[U.length-1]===s)return;U.push(s);if(U.length>60)U.shift()}
+["pointerdown","keydown"].forEach(n=>document.addEventListener(n,e=>{const t=e.target;if(t.closest&&t.closest("[data-act=undo],[data-act=redo]"))return;if(n==="keydown"&&(e.ctrlKey||e.metaKey)&&/^[zy]$/i.test(e.key))return;snap()},true));
+function rest(s){const o=JSON.parse(s);S=o.S;si=Math.min(o.si,S.length-1);tabs();build()}
+function undo(){const c=ser();if(U[U.length-1]===c)U.pop();if(!U.length)return toast("Geri alınacak işlem yok");R.push(c);rest(U.pop());rs=ser()}
+function redo(){if(!R.length)return toast("Yinelenecek işlem yok");const c=ser();if(U[U.length-1]!==c)U.push(c);rest(R.pop());rs=ser()}
+addEventListener("keydown",e=>{if(editing||/INPUT|SELECT/.test(e.target.tagName)||$("#v1").style.display==="none"||!(e.ctrlKey||e.metaKey))return;const k=e.key.toLowerCase();if(k==="z"){e.preventDefault();e.shiftKey?redo():undo()}else if(k==="y"){e.preventDefault();redo()}else if(k==="a"){e.preventDefault();selAll()}});
+TB.insertAdjacentHTML("afterbegin",'<button data-g="g" data-act="cut">✂ Kes</button><button data-g="g" data-act="copy">📄 Kopyala</button><button data-g="g" data-act="paste">📋 Yapıştır</button><button data-g="g" data-act="all">⬚ Tümünü seç</button><button data-g="g" data-act="undo">↩ Geri al</button><button data-g="g" data-act="redo">↪ Yinele</button><button data-g="g" id="sm">👆 Dokunarak seç</button><span class="sp" data-g="g"></span>');
+TB.insertAdjacentHTML("beforeend",'<button data-g="e" data-act="totable">▦ Seçimi tablo yap</button>');
+TB.addEventListener("click",e=>{const a=e.target.closest("[data-act]");if(a)({cut:()=>copySel(1),copy:()=>copySel(),paste,all:selAll,undo,redo,totable:selToTable})[a.dataset.act]()});
+$("#sm").onclick=()=>{smode=!smode;setTA();$("#sm").classList.toggle("on",smode);toast(smode?"Dokunarak seçme açık: parmakla sürükleyerek alan seç. Kaydırmak için kapat.":"Kaydırma modu")};
+setTab(document.querySelector("#rb .on").dataset.t);
+/* kısayol dersleri */
+const MK={A1:"Elma",A2:"Muz",A3:"Çilek"},MC=["A","B","C"];let M,Ms=[],Mc=null,Mu=[],Mr=[];
+const mreset=()=>{M={...MK};Ms=[];Mc=null;Mu=[];Mr=[]},mp=()=>{Mu.push(JSON.stringify(M));Mr=[]};
+const mx={sel:k=>{Ms=[k]},all:()=>{Ms=MC.flatMap(c=>[1,2,3].map(r=>c+r))},copy:()=>{if(Ms.length)Mc=M[Ms[0]]||""},cut:()=>{if(Ms.length){Mc=M[Ms[0]]||"";mp();delete M[Ms[0]]}},paste:()=>{if(Mc!==null&&Ms.length){mp();M[Ms[0]]=Mc}},undo:()=>{if(Mu.length){Mr.push(JSON.stringify(M));M=JSON.parse(Mu.pop())}},redo:()=>{if(Mr.length){Mu.push(JSON.stringify(M));M=JSON.parse(Mr.pop())}},set:(k,v)=>{mp();M[k]=v}};
+const COMBO={"Ctrl+C":"copy","Ctrl+X":"cut","Ctrl+V":"paste","Ctrl+A":"all","Ctrl+Z":"undo","Ctrl+Y":"redo"};
+function mrender(){const t=$("#mg");if(!t)return;let h="<tr><th></th>"+MC.map(c=>`<th>${c}</th>`).join("")+"</tr>";for(let r=1;r<=3;r++){h+=`<tr><th>${r}</th>`;MC.forEach(c=>{const k=c+r;h+=`<td data-k="${k}" class="${Ms.includes(k)?"hl":""}">${M[k]||""}</td>`});h+="</tr>"}t.innerHTML=h}
+function flash(c){document.querySelectorAll('.cb[data-c="'+c+'"]').forEach(x=>{x.classList.add("pr");setTimeout(()=>x.classList.remove("pr"),600)})}
+const kp=c=>{mx[COMBO[c]]();flash(c)};
+LS.push(
+{n:"⌨ Kopyala – Yapıştır",sc:["Ctrl+C","Ctrl+V"],a:"Kopyala (Ctrl+C) seçili hücrenin bir kopyasını alır. Yapıştır (Ctrl+V) o kopyayı seçtiğin başka hücreye koyar. İlk hücre olduğu gibi kalır.",steps:[["1) A1 hücresini seç",()=>mx.sel("A1")],["2) Ctrl + C’ye bas (kopyala)",()=>kp("Ctrl+C")],["3) B1 hücresini seç",()=>mx.sel("B1")],["4) Ctrl + V’ye bas (yapıştır)",()=>kp("Ctrl+V")]],i:"Mac’te Ctrl yerine ⌘ tuşunu kullan. Telefonda hüpe basılı tutunca menü açılır."},
+{n:"⌨ Kes – Yapıştır",sc:["Ctrl+X","Ctrl+V"],a:"Kes (Ctrl+X) seçili hücreyi olduğu yerden alır. Yapıştır (Ctrl+V) onu yeni hücreye taşır. Yani veri bir yerden çıkıp diğer yere gider.",steps:[["1) A2 hücresini seç",()=>mx.sel("A2")],["2) Ctrl + X’e bas (kes)",()=>kp("Ctrl+X")],["3) B2 hücresini seç",()=>mx.sel("B2")],["4) Ctrl + V’ye bas (yapıştır)",()=>kp("Ctrl+V")]],i:"Kopyalamada veri iki yerde olur, kesmede taşınır."},
+{n:"⌨ Tümünü seç",sc:["Ctrl+A"],a:"Ctrl+A tablodaki bütün hücreleri tek seferde seçer. Hepsini silmek, boyamak ya da biçimlendirmek için kullanılır.",steps:[["Önce tek bir hücre seçili",()=>mx.sel("A1")],["Ctrl + A’ya bas: hepsi seçildi!",()=>kp("Ctrl+A")]],i:"Seçimi kaldırmak için herhangi bir hücreye tıkla."},
+{n:"⌨ Geri al",sc:["Ctrl+Z"],a:"Ctrl+Z son yaptığın işlemi geri alır. Yanlış bir şey yazdıysan ya da sildiysen çok işe yarar.",steps:[["B1’e yanlışlıkla ‘Elma’ yazıldı",()=>{mx.sel("B1");mx.set("B1","Elma")}],["Ctrl + Z’ye bas: işlem geri alındı",()=>kp("Ctrl+Z")]],i:"Birden fazla kez basarak daha eski işlemlere de dönebilirsin."},
+{n:"⌨ Yinele",sc:["Ctrl+Z","Ctrl+Y"],a:"Ctrl+Y geri aldığın işlemi tekrar yapar. Yani Ctrl+Z’nin tersidir.",steps:[["B1’e ‘Elma’ yazıldı",()=>{mx.sel("B1");mx.set("B1","Elma")}],["Ctrl + Z ile geri aldık",()=>kp("Ctrl+Z")],["Vazgeçtik! Ctrl + Y ile yineledik",()=>kp("Ctrl+Y")]],i:"Bir işlemi geri alıp tekrar yapmak için Z’den sonra Y’ye bas."});
+function shortcutLesson(l){mreset();
+ $("#lc").innerHTML=`<h2>${l.n}</h2><p>${l.a}</p><div style="margin:8px 0">${l.sc.map(c=>`<span class="cb" data-c="${c}">${c.split("+").map(k=>`<kbd>${k}</kbd>`).join(" + ")}</span>`).join(" &nbsp;ve&nbsp; ")}</div><table class="mini" id="mg"></table><div id="st"></div><label>Hız <select id="sp"><option value="0.5">0,5x</option><option value="1">1x</option><option value="2">2x</option><option value="3">3x</option></select></label> <button class="pb" id="pl">▶ Animasyonu oynat</button><button class="pb" id="rs" style="background:#64748b">↺ Sıfırla</button><h3>🖐 Sen de dene</h3><p style="font-size:13px">Tablodan bir hücreye tıkla (yazmak için çift tıkla). Kısayola bas ya da düğmeleri kullan:</p><div>${[["cut","✂ Kes"],["copy","📄 Kopyala"],["paste","📋 Yapıştır"],["all","⬚ Tümünü seç"],["undo","↩ Geri al"],["redo","↪ Yinele"]].map(b=>`<button class="pb" data-m="${b[0]}" style="background:#2563eb">${b[1]}</button>`).join("")}</div><div id="ms" style="font-weight:700;color:var(--ac);min-height:22px"></div><button class="pb" id="tr" style="background:#9333ea">📋 Gerçek tabloda uygula</button><p>💡 ${l.i}</p>`;
+ $("#sp").value=SP;$("#sp").onchange=e=>SP=+e.target.value;mrender();
+ const run=()=>{tm.forEach(clearTimeout);tm=[];mreset();mrender();$("#st").textContent="";$("#ms").textContent="";l.steps.forEach((s,i)=>tm.push(setTimeout(()=>{$("#st").textContent=s[0];s[1]();mrender()},900*(i+1)/SP)))};
+ $("#pl").onclick=run;$("#rs").onclick=()=>{tm.forEach(clearTimeout);mreset();mrender();$("#st").textContent=""};
+ $("#mg").onclick=e=>{const t=e.target.closest("td");if(t){mx.sel(t.dataset.k);mrender()}};
+ $("#mg").ondblclick=e=>{const t=e.target.closest("td");if(t){const v=prompt("Hücreye yaz:",M[t.dataset.k]||"");if(v!==null){mx.set(t.dataset.k,v);mrender()}}};
+ document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{mx[b.dataset.m]();mrender();$("#ms").textContent="✔ "+b.textContent+" uygulandı"});
+ $("#tr").onclick=()=>{S[2].d={A1:{v:"Elma"},A2:{v:"Muz"},A3:{v:"Çilek"}};si=2;sel={r:0,c:0,r2:0,c2:0};show(1);tabs();build();toast("Sayfa3’te dene: "+l.sc.join(" ve "))};
+ run()}
+addEventListener("keydown",e=>{if($("#ls").style.display!=="block"||!LS[li]||!LS[li].sc||/INPUT|SELECT/.test(e.target.tagName)||!(e.ctrlKey||e.metaKey))return;const c="Ctrl+"+e.key.toUpperCase();if(COMBO[c]){e.preventDefault();mx[COMBO[c]]();flash(c);mrender();$("#ms").textContent="✔ "+c+" uygulandı"}});
+/* örnek veri */
+(()=>{const d=S[0].d,rows=[["Ürün","Adet","Fiyat","Tutar"],["Defter",3,25],["Kalem",5,8],["Silgi",2,6],["Cetvel",1,12]];
+ rows.forEach((r,i)=>r.forEach((v,j)=>d[key(i,j)]={v:String(v),bd:1,bg:i?undefined:"#bfdbfe"}));
+ for(let i=1;i<5;i++)d[key(i,3)]={v:`=B${i+1}*C${i+1}`,bd:1};d.A6={v:"Toplam",bd:1,bg:"#bbf7d0"};d.D6={v:"=TOPLA(D2:D5)",bd:1,bg:"#bbf7d0"};S[0].t.push({r:0,c:0,h:5,w:4});
+ d.F1={v:"Sayıları yaz, formülle hesapla!",ha:"left"}})();
+tabs();build();pick(1,3);
+
+/* Dokunmatik alan seçimi ve canlı kısayol rehberi */
+const SHORTCUTS=[['C','Kopyala','copy'],['X','Kes','cut'],['V','Yapıştır','paste'],['Z','Geri al','undo'],['Y','Yinele','redo'],['A','Tüm hücreleri seç','all']];
+const shortcutRows=document.getElementById('shortcutRows');
+shortcutRows.innerHTML=SHORTCUTS.map(([k,name])=>`<button type="button" class="shortcutRow" data-shortcut="${k}"><kbd>Ctrl + ${k}</kbd><span>${name}</span></button>`).join('');
+const shortcutLog=[];
+function announceShortcut(k){const q=SHORTCUTS.find(v=>v[0]===k);if(!q)return;const label='Ctrl + '+k;document.getElementById('shortcutCurrent').textContent=label;document.getElementById('shortcutMeaning').textContent=q[1];shortcutLog.unshift({label,name:q[1]});shortcutLog.splice(7);document.getElementById('shortcutHistory').innerHTML=shortcutLog.map(v=>`<div><strong>${v.label}</strong> — ${v.name}</div>`).join('');shortcutRows.querySelectorAll('.shortcutRow').forEach(b=>b.classList.toggle('active',b.dataset.shortcut===k));}
+shortcutRows.addEventListener('click',e=>{const b=e.target.closest('[data-shortcut]');if(!b)return;const k=b.dataset.shortcut,fn={C:()=>copySel(false),X:()=>copySel(true),V:()=>paste(),Z:()=>undo(),Y:()=>redo(),A:()=>selAll()}[k];if(fn){fn();announceShortcut(k)}});
+// Kısayollar eski olay dinleyicilerinde işlenir. Bu dinleyici yalnızca hangi tuşların kullanıldığını gösterir.
+document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||document.getElementById('v1').style.display==='none')return;const k=e.key.toUpperCase();if(SHORTCUTS.some(v=>v[0]===k)&&!e.altKey){announceShortcut(k)}},false);
+// Üst araç çubuğu ve sağ tık menüsünden yapılan aynı işlemler de gösterilir.
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const k={copy:'C',cut:'X',paste:'V',undo:'Z',redo:'Y',all:'A'}[b.dataset.act];if(k)announceShortcut(k)},false);
+// Dokunmatik sürükleme, pointer capture sayesinde hücre dışına gidildiğinde de devam eder.
+// Parmağı aynı hücreye bir kez dokunmak seçimdir; çift dokunmak düzenlemedir.
+</script></body></html>
